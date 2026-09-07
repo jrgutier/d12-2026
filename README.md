@@ -1,12 +1,13 @@
 # D12 2026 — season projections
 
 Projections for a 12-team superflex fantasy auction where every manager spent exactly $200
-on a 15-man roster. Two analyses, each a self-contained page, published from this repo.
+on a 15-man roster. Three analyses, each a self-contained page, published from this repo: two from Claude, one from Grok.
 
-| Page | Projection source | URL |
-|---|---|---|
-| **Twenty-Four Quarterbacks** | Sleeper's weekly 2026 projections, scored with the league's settings | https://jrgutier.github.io/d12-2026/sleeper/ |
-| **The $2,400 Board** | the league's own 2026 ranking board | https://jrgutier.github.io/d12-2026/ |
+| Page | Author | Projection source | URL |
+|---|---|---|---|
+| **Twenty-Four Quarterbacks** | Claude | Sleeper's weekly 2026 projections, scored with the league's settings | https://jrgutier.github.io/d12-2026/sleeper/ |
+| **The $2,400 Board** | Claude | the league's own 2026 ranking board | https://jrgutier.github.io/d12-2026/ |
+| **The Sheet** | Grok | Sleeper 2026 season totals, scored with the league's settings | https://jrgutier.github.io/d12-2026/grok/ |
 
 ## Method
 
