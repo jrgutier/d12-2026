@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="The same D12 2026 auction re-projected on Sleeper's weekly projections instead of the league board - the result reverses, and one position explains why.">
+<meta name="description" content="A season projection for the D12 2026 superflex auction built on Sleeper's weekly projections, scored with the league's own settings over 20,000 simulated seasons.">
 <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Two Boards, One Draft">
-<meta property="og:description" content="The same D12 2026 auction re-projected on Sleeper's weekly projections instead of the league board - the result reverses, and one position explains why.">
-<title>Two Boards, One Draft</title>
+<meta property="og:title" content="Twenty-Four Quarterbacks">
+<meta property="og:description" content="A season projection for the D12 2026 superflex auction built on Sleeper's weekly projections, scored with the league's own settings over 20,000 simulated seasons.">
+<title>Twenty-Four Quarterbacks</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600;6..72,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
@@ -16,7 +16,7 @@
 :root{
   --bg:#F4F6F7; --surf:#FFFFFF; --surf2:#E7ECEE; --ink:#111A1C; --ink2:#39484C;
   --mute:#66787D; --line:#D8E0E2; --line2:#BECACD;
-  --sleep:#0E6E72; --board:#96263B; --accent:#0E6E72; --accent-soft:#DCEBEB;
+  --accent:#0E6E72; --accent-soft:#DCEBEB;
   --qb:#3B4EB5; --rb:#087268; --wr:#8A5B0D; --te:#93407F; --def:#5C6674;
   --bar-qb:#3B4EB5; --bar-rb:#087268; --bar-wr:#8A5B0D; --bar-te:#93407F; --bar-def:#5C6674;
   --up:#0B7C56; --down:#A33128;
@@ -27,90 +27,66 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#0B1113; --surf:#131C1F; --surf2:#1B2629; --ink:#E4EDEF; --ink2:#B6C6C9;
   --mute:#87999D; --line:#222F33; --line2:#324246;
-  --sleep:#3FC0BE; --board:#E8798C; --accent:#3FC0BE; --accent-soft:#0F2E30;
+  --accent:#3FC0BE; --accent-soft:#0F2E30;
   --qb:#7D8DF0; --rb:#2FBFB0; --wr:#E0A63F; --te:#D07ABE; --def:#8B97A5;
   --up:#3FBE8B; --down:#E8776B;
 }}
 :root[data-theme="dark"]{
   --bg:#0B1113; --surf:#131C1F; --surf2:#1B2629; --ink:#E4EDEF; --ink2:#B6C6C9;
   --mute:#87999D; --line:#222F33; --line2:#324246;
-  --sleep:#3FC0BE; --board:#E8798C; --accent:#3FC0BE; --accent-soft:#0F2E30;
+  --accent:#3FC0BE; --accent-soft:#0F2E30;
   --qb:#7D8DF0; --rb:#2FBFB0; --wr:#E0A63F; --te:#D07ABE; --def:#8B97A5;
   --up:#3FBE8B; --down:#E8776B;
 }
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--b-sans);font-size:15px;
-  line-height:1.55;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--ink);font-family:var(--b-sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
 .wrap{max-width:1080px;margin:0 auto;padding:0 22px 80px}
 h1,h2,h3,h4{font-family:var(--d-serif);font-weight:600;text-wrap:balance;margin:0}
 a{color:var(--accent)}
-.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--mute)}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
 .top{border-bottom:1px solid var(--line2);padding:34px 0 24px;margin-bottom:34px}
 .top h1{font-size:clamp(34px,6.2vw,60px);line-height:1.03;letter-spacing:-.015em}
 .top .sub{max-width:64ch;color:var(--ink2);margin:16px 0 0;font-size:17px}
-.srckey{display:flex;gap:22px;margin-top:20px;flex-wrap:wrap}
-.srckey span{font-family:var(--mono);font-size:11.5px;color:var(--mute);display:flex;
-  align-items:center;gap:7px}
-.sw{width:22px;height:4px;border-radius:2px;display:inline-block}
-.sw.sleep{background:var(--sleep)} .sw.board{background:var(--board)}
+.facts{display:flex;flex-wrap:wrap;margin-top:22px;border:1px solid var(--line);border-radius:3px;background:var(--surf);overflow:hidden}
+.facts div{flex:1 1 150px;padding:11px 14px;border-right:1px solid var(--line)}
+.facts div:last-child{border-right:0}
+.facts b{display:block;font-family:var(--mono);font-size:14px}
+.facts em{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
 section{margin-top:54px}
-.sh{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--line2);
-  padding-bottom:8px;margin-bottom:22px;flex-wrap:wrap}
+.sh{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--line2);padding-bottom:8px;margin-bottom:22px;flex-wrap:wrap}
 .sh h2{font-size:26px;letter-spacing:-.01em}
 .sh p{margin:0;color:var(--mute);font-size:13px}
 .lede{max-width:68ch;color:var(--ink2);margin:0 0 22px}
 .verdict{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
-.vcard{background:var(--surf);border:1px solid var(--line);border-top:3px solid var(--sleep);
-  border-radius:3px;padding:20px}
-.vcard.fall{border-top-color:var(--board)}
-.vcard .rankpill{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--accent)}
-.vcard.fall .rankpill{color:var(--board)}
+.vcard{background:var(--surf);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:3px;padding:20px}
+.vcard .rankpill{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);margin:0}
 .vcard h3{font-size:25px;margin:6px 0 2px}
 .vcard .owner{color:var(--mute);font-family:var(--mono);font-size:12px;margin:0 0 14px}
-.vcard .big{font-family:var(--d-serif);font-size:44px;font-weight:600;line-height:1;
-  letter-spacing:-.02em;margin:0}
-.vcard .big i{font-style:normal;font-size:15px;color:var(--mute);margin-left:8px;
-  font-family:var(--mono)}
+.vcard .big{font-family:var(--d-serif);font-size:44px;font-weight:600;line-height:1;letter-spacing:-.02em;margin:0}
+.vcard .big i{font-style:normal;font-size:15px;color:var(--mute);margin-left:8px;font-family:var(--mono)}
 .vcard p.why{margin:14px 0 0;font-size:14px;color:var(--ink2)}
-/* slope */
-.slopewrap{background:var(--surf);border:1px solid var(--line);border-radius:3px;
-  padding:14px 10px;overflow-x:auto}
-.slopewrap svg{min-width:700px;display:block}
-.sl{fill:none;stroke-width:1.8;opacity:.85}
-.sl.up{stroke:var(--sleep)} .sl.down{stroke:var(--board)} .sl.flat{stroke:var(--line2)}
-.sd.up{fill:var(--sleep)} .sd.down{fill:var(--board)} .sd.flat{fill:var(--line2)}
-.slb{font-family:var(--b-sans);font-size:12.5px;fill:var(--ink)}
-.srk{font-family:var(--mono);font-size:11px;fill:var(--mute)}
-.smv{font-family:var(--mono);font-size:10.5px}
-.smv.up{fill:var(--sleep)} .smv.down{fill:var(--board)}
-.sax{font-family:var(--mono);font-size:10px;letter-spacing:.14em;fill:var(--mute)}
-/* curves */
+.odds{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.orow{display:grid;grid-template-columns:minmax(120px,190px) 1fr 52px;align-items:center;gap:12px}
+.ot{font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.obar{background:var(--surf2);height:15px;border-radius:2px;overflow:hidden}
+.obar span{display:block;height:100%;background:var(--accent);border-radius:2px}
+.ov{font-family:var(--mono);font-size:12.5px;text-align:right;font-variant-numeric:tabular-nums}
 .curves{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:16px}
-.curve{background:var(--surf);border:1px solid var(--line);border-radius:3px;padding:16px 16px 12px}
-.curve.hot{border-color:var(--sleep);box-shadow:0 0 0 1px var(--sleep)}
-.curve h4{font-size:17px;display:flex;justify-content:space-between;align-items:baseline;
-  margin-bottom:12px}
-.curve h4 span{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--mute);
-  text-transform:uppercase;font-weight:400}
+.curve{background:var(--surf);border:1px solid var(--line);border-radius:3px;padding:16px}
+.curve.hot{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.curve h4{font-size:17px;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+.curve h4 span{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--mute);text-transform:uppercase;font-weight:400}
 .clist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
 .clist li{display:grid;grid-template-columns:34px 1fr;gap:8px;align-items:center}
 .cr{font-family:var(--mono);font-size:10.5px;color:var(--mute)}
-.ct{display:flex;align-items:center;gap:6px;grid-column:2}
-.clist li{grid-template-columns:34px 1fr;grid-template-rows:auto auto;row-gap:3px}
-.cb{height:9px;border-radius:2px;flex:0 0 auto;min-width:2px}
-.cb.sleep{background:var(--sleep)} .cb.board{background:var(--board)}
+.ct{display:flex;align-items:center;gap:6px;min-width:0}
+.cb{height:10px;border-radius:2px;flex:0 0 auto;min-width:2px;background:var(--accent)}
+.clist li.repl .cb{background:var(--line2)}
 .ct i{font-style:normal;font-family:var(--mono);font-size:10px;color:var(--mute)}
-.cfoot{margin:12px 0 0;padding-top:10px;border-top:1px solid var(--line);
-  font-family:var(--mono);font-size:10.5px;color:var(--mute);display:flex;gap:12px}
-.cfoot b{font-size:14px}
-.sleep-t{color:var(--sleep)} .board-t{color:var(--board)}
-/* market */
-.mkt{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;
-  border-top:1px solid var(--line)}
-.mrow{display:grid;grid-template-columns:44px 1fr 56px;align-items:center;gap:14px;
-  padding:15px 0;border-bottom:1px solid var(--line)}
+.cfoot{margin:14px 0 0;padding-top:10px;border-top:1px solid var(--line);font-family:var(--mono);font-size:10.5px;color:var(--mute);display:flex;gap:8px;align-items:baseline}
+.cfoot b{font-size:15px;color:var(--accent)}
+.mkt{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.mrow{display:grid;grid-template-columns:44px 1fr 56px;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid var(--line)}
 .mp{font-family:var(--mono);font-size:12px;font-weight:600}
 .mp.p-QB{color:var(--qb)} .mp.p-RB{color:var(--rb)} .mp.p-WR{color:var(--wr)}
 .mp.p-TE{color:var(--te)} .mp.p-DEF{color:var(--def)}
@@ -118,54 +94,38 @@ section{margin-top:54px}
 .mline{display:flex;align-items:center;gap:9px}
 .mb{height:18px;border-radius:2px;flex:0 0 auto;min-width:3px}
 .mb.val{background:var(--surf2);border:1px solid var(--line2)}
-.mline i{font-style:normal;font-family:var(--mono);font-size:10.5px;white-space:nowrap;
-  color:var(--ink2)}
+.mline i{font-style:normal;font-family:var(--mono);font-size:10.5px;white-space:nowrap;color:var(--ink2)}
 .mline:last-child i{color:var(--mute)}
 .minf{font-family:var(--mono);font-size:14px;text-align:right;font-variant-numeric:tabular-nums}
-.minf.hot{color:var(--down);font-weight:600} .minf.cold{color:var(--up);font-weight:600}
+.minf.hot{color:var(--down);font-weight:600}
+.minf.cold{color:var(--up);font-weight:600}
 .bar-QB{background:var(--bar-qb)} .bar-RB{background:var(--bar-rb)}
 .bar-WR{background:var(--bar-wr)} .bar-TE{background:var(--bar-te)} .bar-DEF{background:var(--bar-def)}
 .dot.p-QB{background:var(--qb)} .dot.p-RB{background:var(--rb)} .dot.p-WR{background:var(--wr)}
 .dot.p-TE{background:var(--te)} .dot.p-DEF{background:var(--def)}
-/* table */
 .tw{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--surf)}
-table{border-collapse:collapse;width:100%;min-width:740px;font-size:13.5px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:13.5px}
 th,td{padding:8px 11px;text-align:left;border-bottom:1px solid var(--line)}
-thead th{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--mute);font-weight:500;background:var(--surf2);white-space:nowrap}
+thead th{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);font-weight:500;background:var(--surf2);white-space:nowrap}
 tbody tr:last-child td{border-bottom:0}
 td.n,th.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
 td.r{font-family:var(--mono);color:var(--mute);width:34px}
 td.tn em{display:block;font-style:normal;font-family:var(--mono);font-size:11px;color:var(--mute)}
-td.hl{font-weight:600;color:var(--sleep)}
-td.was2{color:var(--board)} td.rng{color:var(--mute);font-size:12px}
-td.mv{font-size:12px;color:var(--mute)}
-td.mv.up{color:var(--sleep)} td.mv.down{color:var(--board)}
-/* lots */
-.lot{background:var(--surf);border:1px solid var(--line);border-radius:3px;
-  padding:20px 20px 16px;margin-bottom:14px}
+td.hl{font-weight:600;color:var(--accent)}
+td.rng{color:var(--mute);font-size:12px}
+.lot{background:var(--surf);border:1px solid var(--line);border-radius:3px;padding:20px 20px 16px;margin-bottom:14px}
 .lot-h{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
-.num{font-family:var(--mono);font-size:12px;color:var(--mute);padding-top:6px;
-  border-right:1px solid var(--line2);padding-right:14px;align-self:stretch}
+.num{font-family:var(--mono);font-size:12px;color:var(--mute);padding-top:6px;border-right:1px solid var(--line2);padding-right:14px;align-self:stretch}
 .idw{flex:1 1 200px}
 .idw h3{font-size:21px}
-.owner{margin:1px 0 6px;font-family:var(--mono);font-size:11.5px;color:var(--mute)}
-.badge{font-family:var(--mono);font-size:10px;letter-spacing:.06em;padding:2px 7px;
-  border-radius:2px;background:var(--surf2);color:var(--mute)}
-.badge.up{background:var(--accent-soft);color:var(--sleep)}
-.badge.down{color:var(--board);background:var(--accent-soft)}
+.owner{margin:1px 0 0;font-family:var(--mono);font-size:11.5px;color:var(--mute)}
 .kpis{display:flex;gap:20px;flex-wrap:wrap}
-.kpi b{display:block;font-family:var(--mono);font-size:17px;font-weight:600;
-  font-variant-numeric:tabular-nums}
+.kpi b{display:block;font-family:var(--mono);font-size:17px;font-weight:600;font-variant-numeric:tabular-nums}
 .kpi b i{font-style:normal;font-weight:400;color:var(--mute);font-size:14px}
-.kpi em{font-style:normal;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--mute)}
-.kpi.hero b{color:var(--sleep);font-size:22px}
-.kpi .was{display:block;font-family:var(--mono);font-size:9.5px;color:var(--board)}
-.budget{display:flex;height:26px;margin:16px 0 4px;border-radius:2px;overflow:hidden;
-  border:1px solid var(--line)}
-.seg{display:flex;align-items:center;justify-content:center;gap:5px;overflow:hidden;
-  min-width:0;color:#fff}
+.kpi em{font-style:normal;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.kpi.hero b{color:var(--accent);font-size:22px}
+.budget{display:flex;height:26px;margin:16px 0 4px;border-radius:2px;overflow:hidden;border:1px solid var(--line)}
+.seg{display:flex;align-items:center;justify-content:center;gap:5px;overflow:hidden;min-width:0;color:#fff}
 .seg em,.seg b{font-style:normal;font-family:var(--mono);font-size:10px;white-space:nowrap}
 .seg em{opacity:.72}
 .note{margin:12px 0 16px;font-size:14.2px;color:var(--ink2);max-width:74ch}
@@ -174,17 +134,20 @@ td.mv.up{color:var(--sleep)} td.mv.down{color:var(--board)}
   .plist{grid-template-columns:1fr 1fr;grid-template-rows:repeat(5,auto);grid-auto-flow:column}
   .plist.bench{grid-template-rows:none;grid-auto-flow:row}
 }
-.p-row{display:grid;grid-template-columns:9px 46px 1fr 32px 40px 40px 34px 34px;
-  align-items:center;gap:7px;padding:4.5px 0;border-bottom:1px solid var(--line);font-size:13px}
+.p-row{display:grid;grid-template-columns:9px 46px 1fr 32px 42px 36px 36px 36px;align-items:center;gap:7px;padding:4.5px 0;border-bottom:1px solid var(--line);font-size:13px}
 .dot{width:8px;height:8px;border-radius:50%}
 .slot{font-family:var(--mono);font-size:9.5px;color:var(--mute)}
 .slot.bn{color:var(--line2)}
 .pn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gms{font-family:var(--mono);font-size:9px;color:var(--mute);margin-left:6px;padding:0 3px;border:1px solid var(--line2);border-radius:2px}
 .nfl{font-family:var(--mono);font-size:10.5px;color:var(--mute)}
-.ppg,.paid,.sur,.dlt{font-family:var(--mono);font-size:11.5px;text-align:right;
-  font-variant-numeric:tabular-nums}
-.paid{color:var(--ink2)} .sur,.dlt{color:var(--mute)}
-.sur.up,.dlt.up{color:var(--up)} .sur.down,.dlt.down{color:var(--down)}
+.ppg,.paid,.valc,.sur,.ppgs{font-family:var(--mono);font-size:11.5px;text-align:right;font-variant-numeric:tabular-nums}
+.paid{color:var(--ink2)}
+.valc{color:var(--ink)}
+.ppgs{color:var(--mute)}
+.sur{color:var(--mute)}
+.sur.up{color:var(--up)}
+.sur.down{color:var(--down)}
 details{margin-top:12px}
 summary{cursor:pointer;font-family:var(--mono);font-size:11px;color:var(--mute);padding:5px 0}
 summary:hover{color:var(--accent)}
@@ -192,16 +155,11 @@ details[open] summary{color:var(--ink2);margin-bottom:4px}
 .deals{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:26px}
 .deals h3{font-size:17px;margin-bottom:8px}
 .deals ul{list-style:none;margin:0;padding:0}
-.deals li{display:grid;grid-template-columns:9px 1fr 34px 34px 14px 34px 36px 56px;
-  align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--line);font-size:13px}
-.tiny{font-family:var(--mono);font-size:9.5px;color:var(--mute);white-space:nowrap;
-  overflow:hidden;text-overflow:ellipsis}
+.deals li{display:grid;grid-template-columns:9px 1fr 92px 40px 34px 14px 34px 38px;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--line);font-size:13px}
+.tiny{font-family:var(--mono);font-size:9.5px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .arw{color:var(--mute);font-size:11px;text-align:center}
-.paid.val{color:var(--ink)}
-.oldsur{font-family:var(--mono);font-size:9.5px;color:var(--board);text-align:right}
 .sens{width:100%;border-collapse:collapse;min-width:600px;font-size:13px}
-.sens th{font-family:var(--b-sans);font-weight:500;text-transform:none;letter-spacing:0;
-  font-size:13.5px;color:var(--ink2);background:transparent;white-space:nowrap}
+.sens th{font-family:var(--b-sans);font-weight:500;text-transform:none;letter-spacing:0;font-size:13.5px;color:var(--ink2);background:transparent;white-space:nowrap}
 .sens td b{display:block;font-family:var(--b-sans);font-weight:600;font-size:13px}
 .sens td i{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--mute)}
 .method{background:var(--surf);border:1px solid var(--line);border-radius:3px;padding:20px 22px}
@@ -209,30 +167,20 @@ details[open] summary{color:var(--ink2);margin-bottom:4px}
 .method p,.method li{font-size:13.5px;color:var(--ink2);max-width:74ch}
 .method ul{padding-left:18px;margin:6px 0 18px}
 .method li{margin-bottom:4px}
-.caveat{border-left:3px solid var(--sleep);background:var(--accent-soft);padding:14px 18px;
-  border-radius:0 3px 3px 0;margin-top:20px}
+.caveat{border-left:3px solid var(--accent);background:var(--accent-soft);padding:14px 18px;border-radius:0 3px 3px 0;margin-top:20px}
 .caveat p{margin:0 0 10px;color:var(--ink);font-size:13.5px}
 .caveat p:last-child{margin-bottom:0}
-footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);
-  font-family:var(--mono);font-size:11px;color:var(--mute)}
+footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11px;color:var(--mute)}
 @media (max-width:640px){
-  .p-row{grid-template-columns:9px 42px 1fr 36px 38px;gap:6px}
-  .p-row .nfl,.p-row .sur,.p-row .paid{display:none}
-  .deals li{grid-template-columns:9px 1fr 32px 14px 32px 34px}
-  .deals .tiny,.deals .oldsur{display:none}
-  .kpis{gap:14px} .num{border-right:0;padding-right:0}
+  .p-row{grid-template-columns:9px 42px 1fr 40px 38px;gap:6px}
+  .p-row .nfl,.p-row .valc,.p-row .paid{display:none}
+  .deals li{grid-template-columns:9px 1fr 32px 14px 32px 38px}
+  .deals .tiny,.deals .ppgs{display:none}
+  .kpis{gap:14px}
+  .num{border-right:0;padding-right:0}
 }
-@media (prefers-reduced-motion:no-preference){.mb,.cb{transition:width .2s ease}}
+@media (prefers-reduced-motion:no-preference){.mb,.cb,.obar span{transition:width .2s ease}}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-
-.sitenav{max-width:1080px;margin:0 auto;padding:14px 22px 0;display:flex;gap:8px;
-  flex-wrap:wrap;font-family:var(--mono);font-size:11.5px}
-.sitenav a{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:3px;
-  border:1px solid var(--line);color:var(--mute);text-decoration:none;background:var(--surf)}
-.sitenav a:hover{border-color:var(--line2);color:var(--ink)}
-.sitenav a[aria-current="page"]{color:var(--ink);border-color:var(--ink2);background:var(--surf2)}
-.sitenav i{font-style:normal;width:8px;height:8px;border-radius:2px;flex:0 0 auto}
-.sitenav .n1 i{background:#96263B} .sitenav .n2 i{background:#0E6E72}
 </style>
 <style>
 html{color-scheme:light dark}
@@ -242,108 +190,130 @@ img{max-width:100%}
 </style>
 </head>
 <body>
-<nav class="sitenav"><a class="n1" href="/d12-2026/"><i></i>The $2,400 Board <span style="opacity:.6">&middot; league rankings</span></a><a class="n2" href="/d12-2026/sleeper/" aria-current="page"><i></i>Two Boards, One Draft <span style="opacity:.6">&middot; Sleeper projections</span></a></nav>
 <div class="wrap">
 <header class="top">
-  <p class="eyebrow">D12 &middot; 2026 &middot; Same 180 picks &middot; Sleeper / Rotowire weekly projections</p>
-  <h1>Two Boards, One Draft</h1>
-  <p class="sub">Re-running the season projection on Sleeper's own weekly numbers instead of
-  the league board moves eleven of twelve teams and reverses the result. The team that was
-  most likely to win the title is now last. Almost all of it traces to a single disagreement
-  about one position.</p>
-  <div class="srckey">
-    <span><i class="sw sleep"></i>Sleeper / Rotowire weekly projections &mdash; this page</span>
-    <span><i class="sw board"></i>The league's 2026 ranking board &mdash; the first report</span>
+  <p class="eyebrow">D12 &middot; 2026 &middot; Auction complete &middot; 20,000 simulated seasons</p>
+  <h1>Twenty-Four Quarterbacks</h1>
+  <p class="sub">Twelve managers spent exactly $200 apiece on 180 players. This league starts
+  two quarterbacks, so twenty-four of them start every week &mdash; which makes the
+  twenty-fourth-best quarterback nearly free, and makes almost every quarterback in this
+  auction cost more than he is worth.</p>
+  <div class="facts">
+    <div><em>Format</em><b>12-team superflex</b></div>
+    <div><em>Scoring</em><b>0.5 PPR &middot; 5pt pass TD</b></div>
+    <div><em>Rushing</em><b>0.2 / attempt</b></div>
+    <div><em>Record</em><b>H2H + weekly median</b></div>
+    <div><em>Playoffs</em><b>6 teams &middot; wk 15</b></div>
   </div>
 </header>
 
 <section>
-  <div class="sh"><h2>What changed</h2><p>Rank under each projection source, 20,000 seasons each</p></div>
-  <div class="slopewrap"><svg viewBox="0 0 760 470" role="img" width="100%"
- aria-label="Slope chart: each team's rank under the board projection on the left, under Sleeper's projections on the right.">
-<text class="sax" x="232" y="16" text-anchor="end">YOUR BOARD</text>
-<text class="sax" x="528" y="16">SLEEPER</text>
-<path class="sl down" d="M232 34.0 C328 34.0 432 71.3 528 71.3"/><circle class="sd down" cx="232" cy="34.0" r="3.5"/><circle class="sd down" cx="528" cy="71.3" r="3.5"/><text class="slb" x="221" y="37.6" text-anchor="end"><tspan class="srk">1</tspan>  Uncs Gone Wild</text><text class="slb" x="539" y="74.9"><tspan class="srk">2</tspan>  Uncs Gone Wild<tspan class="smv down">  -1</tspan></text><path class="sl down" d="M232 71.3 C328 71.3 432 444.0 528 444.0"/><circle class="sd down" cx="232" cy="71.3" r="3.5"/><circle class="sd down" cx="528" cy="444.0" r="3.5"/><text class="slb" x="221" y="74.9" text-anchor="end"><tspan class="srk">2</tspan>  Joshin&#8217; You Not</text><text class="slb" x="539" y="447.6"><tspan class="srk">12</tspan>  Joshin&#8217; You Not<tspan class="smv down">  -10</tspan></text><path class="sl up" d="M232 108.5 C328 108.5 432 34.0 528 34.0"/><circle class="sd up" cx="232" cy="108.5" r="3.5"/><circle class="sd up" cx="528" cy="34.0" r="3.5"/><text class="slb" x="221" y="112.1" text-anchor="end"><tspan class="srk">3</tspan>  He&#x27;s Back!</text><text class="slb" x="539" y="37.6"><tspan class="srk">1</tspan>  He&#x27;s Back!<tspan class="smv up">  +2</tspan></text><path class="sl up" d="M232 145.8 C328 145.8 432 108.5 528 108.5"/><circle class="sd up" cx="232" cy="145.8" r="3.5"/><circle class="sd up" cx="528" cy="108.5" r="3.5"/><text class="slb" x="221" y="149.4" text-anchor="end"><tspan class="srk">4</tspan>  Fist My Bump</text><text class="slb" x="539" y="112.1"><tspan class="srk">3</tspan>  Fist My Bump<tspan class="smv up">  +1</tspan></text><path class="sl down" d="M232 183.1 C328 183.1 432 406.7 528 406.7"/><circle class="sd down" cx="232" cy="183.1" r="3.5"/><circle class="sd down" cx="528" cy="406.7" r="3.5"/><text class="slb" x="221" y="186.7" text-anchor="end"><tspan class="srk">5</tspan>  Crimson Bears</text><text class="slb" x="539" y="410.3"><tspan class="srk">11</tspan>  Crimson Bears<tspan class="smv down">  -6</tspan></text><path class="sl up" d="M232 220.4 C328 220.4 432 183.1 528 183.1"/><circle class="sd up" cx="232" cy="220.4" r="3.5"/><circle class="sd up" cx="528" cy="183.1" r="3.5"/><text class="slb" x="221" y="224.0" text-anchor="end"><tspan class="srk">6</tspan>  Caleb Williams Fan Club</text><text class="slb" x="539" y="186.7"><tspan class="srk">5</tspan>  Caleb Williams Fan Club<tspan class="smv up">  +1</tspan></text><path class="sl down" d="M232 257.6 C328 257.6 432 294.9 528 294.9"/><circle class="sd down" cx="232" cy="257.6" r="3.5"/><circle class="sd down" cx="528" cy="294.9" r="3.5"/><text class="slb" x="221" y="261.2" text-anchor="end"><tspan class="srk">7</tspan>  Let Lindsay Clancy Walk</text><text class="slb" x="539" y="298.5"><tspan class="srk">8</tspan>  Let Lindsay Clancy Walk<tspan class="smv down">  -1</tspan></text><path class="sl up" d="M232 294.9 C328 294.9 432 220.4 528 220.4"/><circle class="sd up" cx="232" cy="294.9" r="3.5"/><circle class="sd up" cx="528" cy="220.4" r="3.5"/><text class="slb" x="221" y="298.5" text-anchor="end"><tspan class="srk">8</tspan>  SexWithCresIsBest</text><text class="slb" x="539" y="224.0"><tspan class="srk">6</tspan>  SexWithCresIsBest<tspan class="smv up">  +2</tspan></text><path class="sl up" d="M232 332.2 C328 332.2 432 145.8 528 145.8"/><circle class="sd up" cx="232" cy="332.2" r="3.5"/><circle class="sd up" cx="528" cy="145.8" r="3.5"/><text class="slb" x="221" y="335.8" text-anchor="end"><tspan class="srk">9</tspan>  Mood Killer</text><text class="slb" x="539" y="149.4"><tspan class="srk">4</tspan>  Mood Killer<tspan class="smv up">  +5</tspan></text><path class="sl up" d="M232 369.5 C328 369.5 432 257.6 528 257.6"/><circle class="sd up" cx="232" cy="369.5" r="3.5"/><circle class="sd up" cx="528" cy="257.6" r="3.5"/><text class="slb" x="221" y="373.1" text-anchor="end"><tspan class="srk">10</tspan>  Mrs. Love</text><text class="slb" x="539" y="261.2"><tspan class="srk">7</tspan>  Mrs. Love<tspan class="smv up">  +3</tspan></text><path class="sl up" d="M232 406.7 C328 406.7 432 369.5 528 369.5"/><circle class="sd up" cx="232" cy="406.7" r="3.5"/><circle class="sd up" cx="528" cy="369.5" r="3.5"/><text class="slb" x="221" y="410.3" text-anchor="end"><tspan class="srk">11</tspan>  Pac-0 Conference</text><text class="slb" x="539" y="373.1"><tspan class="srk">10</tspan>  Pac-0 Conference<tspan class="smv up">  +1</tspan></text><path class="sl up" d="M232 444.0 C328 444.0 432 332.2 528 332.2"/><circle class="sd up" cx="232" cy="444.0" r="3.5"/><circle class="sd up" cx="528" cy="332.2" r="3.5"/><text class="slb" x="221" y="447.6" text-anchor="end"><tspan class="srk">12</tspan>  Tee-Tee Higgins</text><text class="slb" x="539" y="335.8"><tspan class="srk">9</tspan>  Tee-Tee Higgins<tspan class="smv up">  +3</tspan></text>
-</svg></div>
-  <p class="lede" style="margin-top:20px">Only one team holds its position at the top.
-  <b>Uncs Gone Wild</b> is the sole roster that finishes in the top two under both sources &mdash;
-  it never needed either source's opinion about quarterbacks to be right. Everything else moves,
-  and <b>Joshin&#8217; You Not</b> falls ten places, from a 24.1% title favorite to
-  0.0%.</p>
-</section>
-
-<section>
-  <div class="sh"><h2>The favorites</h2><p>Championship probability on Sleeper's projections</p></div>
+  <div class="sh"><h2>The favorites</h2><p>Championship probability over 20,000 seasons</p></div>
   <div class="verdict">
     <div class="vcard">
       <p class="rankpill">Projected champion</p>
       <h3>He's Back!</h3><p class="owner">iamjd</p>
-      <p class="big">26.5%<i>was 12.1% &middot; up +2</i></p>
+      <p class="big">26.5%<i>title odds</i></p>
       <p class="why">Eight starters above 12 ppg, more than any other roster, and the deepest
-      bench in the league. Its three quarterbacks cost $74 and buy almost nothing here &mdash;
-      it wins on the skill positions, which is the one thing both projection sources agree
-      about.</p>
+      bench in the league. Its three quarterbacks cost $74 and buy almost nothing in this
+      format &mdash; it wins on the skill positions, where the spread between a good player
+      and a free one is real.</p>
     </div>
     <div class="vcard">
-      <p class="rankpill">The source-proof roster</p>
+      <p class="rankpill">Closest challenger</p>
       <h3>Uncs Gone Wild</h3><p class="owner">markdeeezy</p>
-      <p class="big">26.0%<i>was 26.9% &middot; -1</i></p>
-      <p class="why">First on the board, second here, and the only team in the top two both
-      times. Stafford and Mahomes at $24 are reasonable under either set of numbers, and the
-      $102 receiver room does the rest. If you don't know which source to trust, this is the
-      roster you want.</p>
+      <p class="big">26.0%<i>title odds</i></p>
+      <p class="why">The most balanced roster in the room. Stafford and Mahomes cover both
+      quarterback seats for $24, which freed $102 for five wide receivers, and its top two
+      players are only 31% of its output &mdash; the lowest concentration in the league.</p>
     </div>
-    <div class="vcard fall">
-      <p class="rankpill">The collapse</p>
+    <div class="vcard">
+      <p class="rankpill">The cautionary tale</p>
       <h3>Joshin&#8217; You Not</h3><p class="owner">xpaulito228x</p>
-      <p class="big">0.0%<i>was 24.1% &middot; -10</i></p>
-      <p class="why">$84 on Maye and Burrow bought roughly 25 ppg over replacement on the board
-      and about 6 here. Strip that away and what is left is the weakest set of eight
-      non-quarterback starters in the league.</p>
+      <p class="big">0.0%<i>title odds</i></p>
+      <p class="why">$84 on Maye and Burrow buys roughly 6 ppg over replacement in a format
+      where 24 quarterbacks start every week. The $116 left over produced the weakest set of
+      eight non-quarterback starters in the league.</p>
     </div>
+  </div>
+  <div style="margin-top:26px">
+    <p class="eyebrow" style="margin:0 0 10px">Title odds &middot; all twelve</p>
+    <ul class="odds"><li class="orow"><span class="ot">He&#x27;s Back!</span>
+    <span class="obar"><span style="width:100.0%"></span></span>
+    <span class="ov">26.5%</span></li>
+<li class="orow"><span class="ot">Uncs Gone Wild</span>
+    <span class="obar"><span style="width:98.1%"></span></span>
+    <span class="ov">26.0%</span></li>
+<li class="orow"><span class="ot">Fist My Bump</span>
+    <span class="obar"><span style="width:55.8%"></span></span>
+    <span class="ov">14.8%</span></li>
+<li class="orow"><span class="ot">Mood Killer</span>
+    <span class="obar"><span style="width:36.6%"></span></span>
+    <span class="ov">9.7%</span></li>
+<li class="orow"><span class="ot">Caleb Williams Fan Club</span>
+    <span class="obar"><span style="width:24.9%"></span></span>
+    <span class="ov">6.6%</span></li>
+<li class="orow"><span class="ot">SexWithCresIsBest</span>
+    <span class="obar"><span style="width:18.9%"></span></span>
+    <span class="ov">5.0%</span></li>
+<li class="orow"><span class="ot">Mrs. Love</span>
+    <span class="obar"><span style="width:15.8%"></span></span>
+    <span class="ov">4.2%</span></li>
+<li class="orow"><span class="ot">Let Lindsay Clancy Walk</span>
+    <span class="obar"><span style="width:14.0%"></span></span>
+    <span class="ov">3.7%</span></li>
+<li class="orow"><span class="ot">Tee-Tee Higgins</span>
+    <span class="obar"><span style="width:9.8%"></span></span>
+    <span class="ov">2.6%</span></li>
+<li class="orow"><span class="ot">Pac-0 Conference</span>
+    <span class="obar"><span style="width:2.3%"></span></span>
+    <span class="ov">0.6%</span></li>
+<li class="orow"><span class="ot">Crimson Bears</span>
+    <span class="obar"><span style="width:1.1%"></span></span>
+    <span class="ov">0.3%</span></li>
+<li class="orow"><span class="ot">Joshin&#8217; You Not</span>
+    <span class="obar"><span style="width:0.0%"></span></span>
+    <span class="ov">0.0%</span></li></ul>
   </div>
 </section>
 
 <section>
-  <div class="sh"><h2>One position explains it</h2><p>Points per game from the best player to replacement level</p></div>
-  <p class="lede">The two sources are close to interchangeable at running back, receiver and
-  tight end &mdash; within about a point of each other on how much the best player beats a
-  replacement. At quarterback they are not close at all. The board says an elite quarterback
-  is worth 17.5 points a game over the 24th-best; Sleeper says 4.8. In a league that starts
-  24 quarterbacks a week, that one number decides who wins.</p>
+  <div class="sh"><h2>Where the spread actually is</h2><p>Points per game from the best player at each position down to replacement level</p></div>
+  <p class="lede">Replacement level is not the same distance below the top at every position,
+  and in this format the gap at quarterback is the smallest of the four. Thirty-two of the
+  thirty-five quarterbacks drafted project as full-time starters, clustered between 15.2 and
+  25.4 points a game &mdash; so the twenty-fourth of them, the last one who starts in a given
+  week, is only 4.8 points behind the best. A running back that far down costs you 12.6. That
+  asymmetry is the single most important fact about this auction.</p>
   <div class="curves"><div class="curve hot">
-  <h4>QB<span>#1 to replacement</span></h4>
-  <ul class="clist"><li><span class="cr">QB1</span><span class="ct"><span class="cb sleep" style="width:66.3%"></span><i>25.4</i></span><span class="ct"><span class="cb board" style="width:76.0%"></span><i>29.1</i></span></li><li><span class="cr">QB6</span><span class="ct"><span class="cb sleep" style="width:62.2%"></span><i>23.8</i></span><span class="ct"><span class="cb board" style="width:57.7%"></span><i>22.1</i></span></li><li><span class="cr">QB12</span><span class="ct"><span class="cb sleep" style="width:58.8%"></span><i>22.5</i></span><span class="ct"><span class="cb board" style="width:48.3%"></span><i>18.5</i></span></li><li><span class="cr">QB24</span><span class="ct"><span class="cb sleep" style="width:53.8%"></span><i>20.6</i></span><span class="ct"><span class="cb board" style="width:30.3%"></span><i>11.6</i></span></li></ul>
-  <p class="cfoot"><b class="sleep-t">4.8</b> sleeper
-     <b class="board-t">17.5</b> board</p>
+  <h4>QB<span>#1 &rarr; replacement</span></h4>
+  <ul class="clist"><li class="top"><span class="cr">QB1</span><span class="ct"><span class="cb" style="width:76.0%"></span><i>25.4</i></span></li><li class=""><span class="cr">QB6</span><span class="ct"><span class="cb" style="width:71.2%"></span><i>23.8</i></span></li><li class=""><span class="cr">QB12</span><span class="ct"><span class="cb" style="width:67.3%"></span><i>22.5</i></span></li><li class="repl"><span class="cr">QB24</span><span class="ct"><span class="cb" style="width:61.6%"></span><i>20.6</i></span></li></ul>
+  <p class="cfoot"><b>4.8</b> ppg of spread</p>
 </div>
 <div class="curve">
-  <h4>RB<span>#1 to replacement</span></h4>
-  <ul class="clist"><li><span class="cr">RB1</span><span class="ct"><span class="cb sleep" style="width:76.0%"></span><i>23.9</i></span><span class="ct"><span class="cb board" style="width:63.6%"></span><i>20.0</i></span></li><li><span class="cr">RB6</span><span class="ct"><span class="cb sleep" style="width:58.5%"></span><i>18.4</i></span><span class="ct"><span class="cb board" style="width:50.2%"></span><i>15.8</i></span></li><li><span class="cr">RB12</span><span class="ct"><span class="cb sleep" style="width:51.8%"></span><i>16.3</i></span><span class="ct"><span class="cb board" style="width:41.7%"></span><i>13.1</i></span></li><li><span class="cr">RB30</span><span class="ct"><span class="cb sleep" style="width:35.9%"></span><i>11.3</i></span><span class="ct"><span class="cb board" style="width:25.8%"></span><i>8.1</i></span></li></ul>
-  <p class="cfoot"><b class="sleep-t">12.6</b> sleeper
-     <b class="board-t">11.9</b> board</p>
+  <h4>RB<span>#1 &rarr; replacement</span></h4>
+  <ul class="clist"><li class="top"><span class="cr">RB1</span><span class="ct"><span class="cb" style="width:76.0%"></span><i>23.9</i></span></li><li class=""><span class="cr">RB6</span><span class="ct"><span class="cb" style="width:58.5%"></span><i>18.4</i></span></li><li class=""><span class="cr">RB12</span><span class="ct"><span class="cb" style="width:51.8%"></span><i>16.3</i></span></li><li class="repl"><span class="cr">RB30</span><span class="ct"><span class="cb" style="width:35.9%"></span><i>11.3</i></span></li></ul>
+  <p class="cfoot"><b>12.6</b> ppg of spread</p>
 </div>
 <div class="curve">
-  <h4>WR<span>#1 to replacement</span></h4>
-  <ul class="clist"><li><span class="cr">WR1</span><span class="ct"><span class="cb sleep" style="width:76.0%"></span><i>17.5</i></span><span class="ct"><span class="cb board" style="width:67.7%"></span><i>15.6</i></span></li><li><span class="cr">WR6</span><span class="ct"><span class="cb sleep" style="width:62.5%"></span><i>14.4</i></span><span class="ct"><span class="cb board" style="width:54.7%"></span><i>12.6</i></span></li><li><span class="cr">WR12</span><span class="ct"><span class="cb sleep" style="width:56.5%"></span><i>13.0</i></span><span class="ct"><span class="cb board" style="width:46.9%"></span><i>10.8</i></span></li><li><span class="cr">WR42</span><span class="ct"><span class="cb sleep" style="width:39.1%"></span><i>9.0</i></span><span class="ct"><span class="cb board" style="width:26.5%"></span><i>6.1</i></span></li></ul>
-  <p class="cfoot"><b class="sleep-t">8.5</b> sleeper
-     <b class="board-t">9.5</b> board</p>
+  <h4>WR<span>#1 &rarr; replacement</span></h4>
+  <ul class="clist"><li class="top"><span class="cr">WR1</span><span class="ct"><span class="cb" style="width:76.0%"></span><i>17.5</i></span></li><li class=""><span class="cr">WR6</span><span class="ct"><span class="cb" style="width:62.5%"></span><i>14.4</i></span></li><li class=""><span class="cr">WR12</span><span class="ct"><span class="cb" style="width:56.5%"></span><i>13.0</i></span></li><li class="repl"><span class="cr">WR42</span><span class="ct"><span class="cb" style="width:39.1%"></span><i>9.0</i></span></li></ul>
+  <p class="cfoot"><b>8.5</b> ppg of spread</p>
 </div>
 <div class="curve">
-  <h4>TE<span>#1 to replacement</span></h4>
-  <ul class="clist"><li><span class="cr">TE1</span><span class="ct"><span class="cb sleep" style="width:76.0%"></span><i>12.9</i></span><span class="ct"><span class="cb board" style="width:68.3%"></span><i>11.6</i></span></li><li><span class="cr">TE4</span><span class="ct"><span class="cb sleep" style="width:62.4%"></span><i>10.6</i></span><span class="ct"><span class="cb board" style="width:51.8%"></span><i>8.8</i></span></li><li><span class="cr">TE8</span><span class="ct"><span class="cb sleep" style="width:55.4%"></span><i>9.4</i></span><span class="ct"><span class="cb board" style="width:41.8%"></span><i>7.1</i></span></li><li><span class="cr">TE12</span><span class="ct"><span class="cb sleep" style="width:46.0%"></span><i>7.8</i></span><span class="ct"><span class="cb board" style="width:34.8%"></span><i>5.9</i></span></li></ul>
-  <p class="cfoot"><b class="sleep-t">5.1</b> sleeper
-     <b class="board-t">5.7</b> board</p>
+  <h4>TE<span>#1 &rarr; replacement</span></h4>
+  <ul class="clist"><li class="top"><span class="cr">TE1</span><span class="ct"><span class="cb" style="width:76.0%"></span><i>12.9</i></span></li><li class=""><span class="cr">TE4</span><span class="ct"><span class="cb" style="width:62.4%"></span><i>10.6</i></span></li><li class=""><span class="cr">TE8</span><span class="ct"><span class="cb" style="width:55.4%"></span><i>9.4</i></span></li><li class="repl"><span class="cr">TE12</span><span class="ct"><span class="cb" style="width:46.0%"></span><i>7.8</i></span></li></ul>
+  <p class="cfoot"><b>5.1</b> ppg of spread</p>
 </div></div>
 </section>
 
 <section>
-  <div class="sh"><h2>The market, re-priced</h2><p>Dollars paid vs. value derived from Sleeper's projections</p></div>
-  <p class="lede">The first report's headline was that the room underpaid for quarterbacks by a
-  third. On these numbers the room <em>overpaid</em> for them by 61% &mdash; the largest
-  mispricing at any position, in the opposite direction. Running backs and receivers, which the
-  board called badly mispriced, come out close to fair. The genuinely underpriced position both
-  sources can agree on is tight end.</p>
+  <div class="sh"><h2>The market</h2><p>Dollars paid vs. projected value, by position</p></div>
+  <p class="lede">Priced against replacement, the room put 22.5% of its money into a position
+  worth 13.9% of the value in the player pool &mdash; overpaying for quarterbacks by 61%, the largest
+  mispricing anywhere in the draft. Running backs and receivers came out close to fair. The
+  position the room actually left on the table was tight end, bought at 61 cents on the dollar,
+  and team defenses at 20 cents.</p>
   <ul class="mkt"><li class="mrow"><span class="mp p-QB">QB</span>
 <span class="mbars">
   <span class="mline"><span class="mb bar-QB" style="width:29.6%"></span><i>$539 paid &#183; 22.5% of the room</i></span>
@@ -370,517 +340,495 @@ img{max-width:100%}
   <span class="mline"><span class="mb val" style="width:3.6%"></span><i>$64 of value &#183; 2.7%</i></span>
 </span><span class="minf cold">0.20&times;</span></li></ul>
   <p class="lede" style="margin-top:18px;font-size:13.5px;color:var(--mute)">Solid bar: dollars
-  spent. Outlined bar: value on Sleeper's projections. Right-hand figure is spend &divide; value
-  &mdash; above 1.00&times; the room overpaid.</p>
+  spent. Outlined bar: projected value. The figure on the right is spend &divide; value &mdash;
+  above 1.00&times; the room overpaid.</p>
 </section>
 
 <section>
-  <div class="sh"><h2>Full projection</h2><p>Records out of 28 &mdash; head-to-head plus the weekly median match</p></div>
+  <div class="sh"><h2>Full projection</h2><p>Records are out of 28 &mdash; head-to-head plus the weekly median match</p></div>
   <div class="tw"><table>
     <thead><tr><th></th><th>Team</th><th class="n">PPG</th><th class="n">Wins</th>
-    <th class="n">10&ndash;90%</th><th class="n">Playoff</th><th class="n">Final</th>
-    <th class="n">Title</th><th class="n">Board</th><th class="n">Move</th></tr></thead>
+    <th class="n">10&ndash;90%</th><th class="n">#1 seed</th><th class="n">Bye</th>
+    <th class="n">Playoff</th><th class="n">Final</th><th class="n">Title</th></tr></thead>
     <tbody><tr><td class="r">1</td><td class="tn">He&#x27;s Back!<em>iamjd</em></td>
 <td class="n">155.9</td><td class="n">19.3</td>
 <td class="n rng">15&ndash;23</td>
+<td class="n">37.4%</td><td class="n">60.3%</td>
 <td class="n">94%</td><td class="n">48.6%</td>
-<td class="n hl">26.5%</td>
-<td class="n was2">12.1%</td>
-<td class="n mv up">+2</td></tr>
+<td class="n hl">26.5%</td></tr>
 <tr><td class="r">2</td><td class="tn">Uncs Gone Wild<em>markdeeezy</em></td>
 <td class="n">154.9</td><td class="n">18.5</td>
 <td class="n rng">14&ndash;22</td>
+<td class="n">28.1%</td><td class="n">50.8%</td>
 <td class="n">91%</td><td class="n">45.1%</td>
-<td class="n hl">26.0%</td>
-<td class="n was2">26.9%</td>
-<td class="n mv down">-1</td></tr>
+<td class="n hl">26.0%</td></tr>
 <tr><td class="r">3</td><td class="tn">Fist My Bump<em>Heinzwithfries</em></td>
 <td class="n">151.2</td><td class="n">16.9</td>
 <td class="n rng">13&ndash;21</td>
+<td class="n">12.9%</td><td class="n">29.3%</td>
 <td class="n">81%</td><td class="n">29.5%</td>
-<td class="n hl">14.8%</td>
-<td class="n was2">10.9%</td>
-<td class="n mv up">+1</td></tr>
+<td class="n hl">14.8%</td></tr>
 <tr><td class="r">4</td><td class="tn">Mood Killer<em>TMACattack77</em></td>
 <td class="n">148.7</td><td class="n">15.7</td>
 <td class="n rng">11&ndash;20</td>
+<td class="n">7.5%</td><td class="n">18.6%</td>
 <td class="n">70%</td><td class="n">21.1%</td>
-<td class="n hl">9.7%</td>
-<td class="n was2">2.3%</td>
-<td class="n mv up">+5</td></tr>
+<td class="n hl">9.7%</td></tr>
 <tr><td class="r">5</td><td class="tn">Caleb Williams Fan Club<em>stmahmood8</em></td>
 <td class="n">146.7</td><td class="n">14.8</td>
 <td class="n rng">10&ndash;19</td>
+<td class="n">4.6%</td><td class="n">12.1%</td>
 <td class="n">58%</td><td class="n">15.1%</td>
-<td class="n hl">6.6%</td>
-<td class="n was2">4.3%</td>
-<td class="n mv up">+1</td></tr>
+<td class="n hl">6.6%</td></tr>
 <tr><td class="r">6</td><td class="tn">SexWithCresIsBest<em>RDizzlez</em></td>
 <td class="n">145.3</td><td class="n">14.2</td>
 <td class="n rng">10&ndash;19</td>
+<td class="n">3.1%</td><td class="n">9.2%</td>
 <td class="n">52%</td><td class="n">11.6%</td>
-<td class="n hl">5.0%</td>
-<td class="n was2">3.6%</td>
-<td class="n mv up">+2</td></tr>
+<td class="n hl">5.0%</td></tr>
 <tr><td class="r">7</td><td class="tn">Mrs. Love<em>DJMSZ</em></td>
 <td class="n">145.1</td><td class="n">14.0</td>
 <td class="n rng">10&ndash;18</td>
+<td class="n">2.7%</td><td class="n">7.6%</td>
 <td class="n">49%</td><td class="n">10.6%</td>
-<td class="n hl">4.2%</td>
-<td class="n was2">2.1%</td>
-<td class="n mv up">+3</td></tr>
+<td class="n hl">4.2%</td></tr>
 <tr><td class="r">8</td><td class="tn">Let Lindsay Clancy Walk<em>jrgutier</em></td>
 <td class="n">144.3</td><td class="n">13.6</td>
 <td class="n rng">9&ndash;18</td>
+<td class="n">2.2%</td><td class="n">6.7%</td>
 <td class="n">44%</td><td class="n">8.9%</td>
-<td class="n hl">3.7%</td>
-<td class="n was2">4.0%</td>
-<td class="n mv down">-1</td></tr>
+<td class="n hl">3.7%</td></tr>
 <tr><td class="r">9</td><td class="tn">Tee-Tee Higgins<em>atoenail</em></td>
 <td class="n">141.9</td><td class="n">12.7</td>
 <td class="n rng">8&ndash;17</td>
+<td class="n">1.2%</td><td class="n">4.0%</td>
 <td class="n">34%</td><td class="n">6.4%</td>
-<td class="n hl">2.6%</td>
-<td class="n was2">1.3%</td>
-<td class="n mv up">+3</td></tr>
+<td class="n hl">2.6%</td></tr>
 <tr><td class="r">10</td><td class="tn">Pac-0 Conference<em>therussval</em></td>
 <td class="n">137.5</td><td class="n">10.7</td>
 <td class="n rng">6&ndash;15</td>
+<td class="n">0.2%</td><td class="n">0.8%</td>
 <td class="n">14%</td><td class="n">2.0%</td>
-<td class="n hl">0.6%</td>
-<td class="n was2">1.5%</td>
-<td class="n mv up">+1</td></tr>
+<td class="n hl">0.6%</td></tr>
 <tr><td class="r">11</td><td class="tn">Crimson Bears<em>tres907</em></td>
 <td class="n">135.6</td><td class="n">9.6</td>
 <td class="n rng">6&ndash;14</td>
+<td class="n">0.1%</td><td class="n">0.5%</td>
 <td class="n">9%</td><td class="n">0.9%</td>
-<td class="n hl">0.3%</td>
-<td class="n was2">7.0%</td>
-<td class="n mv down">-6</td></tr>
+<td class="n hl">0.3%</td></tr>
 <tr><td class="r">12</td><td class="tn">Joshin&#8217; You Not<em>xpaulito228x</em></td>
 <td class="n">132.2</td><td class="n">7.9</td>
 <td class="n rng">4&ndash;12</td>
+<td class="n">0.0%</td><td class="n">0.1%</td>
 <td class="n">3%</td><td class="n">0.2%</td>
-<td class="n hl">0.0%</td>
-<td class="n was2">24.1%</td>
-<td class="n mv down">-10</td></tr></tbody>
+<td class="n hl">0.0%</td></tr></tbody>
   </table></div>
 </section>
 
 <section>
-  <div class="sh"><h2>Twelve rosters</h2><p>Sleeper per-game projections, with the change from the board</p></div>
-  <p class="lede">The <b>&plusmn;</b> column on each player is the change in projected points per
-  game from the board to Sleeper. The <b>surplus</b> column is Sleeper-derived value minus price
-  paid.</p>
+  <div class="sh"><h2>Twelve rosters</h2><p>Projected starters, budget composition, and where each one breaks</p></div>
+  <p class="lede">Every bar below is exactly $200 wide &mdash; only the composition differs.
+  Each player row runs projected points per game, price paid, projected value, then the surplus
+  between the last two. A badge like <span class="gms">11g</span> marks a player not projected
+  to start all fourteen weeks.</p>
   <article class="lot">
   <header class="lot-h"><span class="num">01</span>
-    <div class="idw"><h3>He&#x27;s Back!</h3><p class="owner">iamjd</p><span class="badge up">+2 vs board</span></div>
+    <div class="idw"><h3>He&#x27;s Back!</h3><p class="owner">iamjd</p></div>
     <div class="kpis">
       <div class="kpi"><b>155.9</b><em>proj PPG</em></div>
       <div class="kpi"><b>19.3<i>-8.7</i></b><em>record /28</em></div>
       <div class="kpi"><b>94%</b><em>playoffs</em></div>
-      <div class="kpi hero"><b>26.5%</b><em>title</em>
-        <span class="was">was 12.1%</span></div>
+      <div class="kpi hero"><b>26.5%</b><em>title</em></div>
     </div>
   </header>
   <div class="budget"><span class="seg bar-QB" style="flex:74" title="QB: $74 of $200"><em>QB</em><b>$74</b></span><span class="seg bar-RB" style="flex:50" title="RB: $50 of $200"><em>RB</em><b>$50</b></span><span class="seg bar-WR" style="flex:70" title="WR: $70 of $200"><em>WR</em><b>$70</b></span><span class="seg bar-TE" style="flex:4" title="TE: $4 of $200"></span><span class="seg bar-DEF" style="flex:2" title="DEF: $2 of $200"></span></div>
-  <p class="note">Now the favorite, and not because of quarterbacks. Hurts, Herbert and Darnold cost $74 and buy roughly 5 ppg over three replacement starters on these numbers &mdash; almost nothing. What wins is the skill corps: eight starters above 12 ppg, more than any other roster, with Rico Dowdle at $2 projecting 13.5. It was third on the board and first here because depth is the one asset both sources agree on.</p>
-  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Jalen Hurts</span><span class="nfl">PHI</span><span class="ppg">24.1</span><span class="dlt up">+3.4</span><span class="paid">$40</span><span class="sur down">-17</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Quinshon Judkins</span><span class="nfl">CLE</span><span class="ppg">15.0</span><span class="dlt up">+4.7</span><span class="paid">$22</span><span class="sur ">+2</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Travis Etienne</span><span class="nfl">NO</span><span class="ppg">14.2</span><span class="dlt up">+2.7</span><span class="paid">$23</span><span class="sur ">-4</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Tee Higgins</span><span class="nfl">CIN</span><span class="ppg">13.2</span><span class="dlt up">+3.8</span><span class="paid">$21</span><span class="sur up">+7</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">Jaylen Waddle</span><span class="nfl">DEN</span><span class="ppg">12.3</span><span class="dlt up">+3.5</span><span class="paid">$21</span><span class="sur ">+1</span></li>
-<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Travis Kelce</span><span class="nfl">KC</span><span class="ppg">9.4</span><span class="dlt up">+2.7</span><span class="paid">$4</span><span class="sur up">+8</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX1</span><span class="pn">Rico Dowdle</span><span class="nfl">PIT</span><span class="ppg">13.5</span><span class="dlt up">+5.4</span><span class="paid">$2</span><span class="sur up">+13</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX2</span><span class="pn">Jameson Williams</span><span class="nfl">DET</span><span class="ppg">12.0</span><span class="dlt up">+3.3</span><span class="paid">$8</span><span class="sur up">+12</span></li>
-<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Justin Herbert</span><span class="nfl">LAC</span><span class="ppg">22.0</span><span class="dlt up">+4.1</span><span class="paid">$29</span><span class="sur down">-19</span></li>
-<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Denver Broncos</span><span class="nfl">DEN</span><span class="ppg">7.0</span><span class="dlt ">-0.4</span><span class="paid">$2</span><span class="sur ">+5</span></li></ul>
+  <p class="note">Eight starters above 12 ppg, more than any other roster, and the deepest bench in the league at 30.2 from the top three reserves. Hurts, Herbert and Darnold cost $74 and buy roughly 5 ppg over three replacement starters, which is close to nothing in this format &mdash; but it barely matters, because the skill positions carry the team. Rico Dowdle at $2 projects 13.5 ppg.</p>
+  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Jalen Hurts</span><span class="nfl">PHI</span><span class="ppg">24.1</span><span class="paid">$40</span><span class="valc">$23</span><span class="sur down">-17</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Quinshon Judkins</span><span class="nfl">CLE</span><span class="ppg">15.0</span><span class="paid">$22</span><span class="valc">$24</span><span class="sur ">+2</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Travis Etienne</span><span class="nfl">NO</span><span class="ppg">14.2</span><span class="paid">$23</span><span class="valc">$19</span><span class="sur ">-4</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Tee Higgins</span><span class="nfl">CIN</span><span class="ppg">13.2</span><span class="paid">$21</span><span class="valc">$28</span><span class="sur up">+7</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">Jaylen Waddle</span><span class="nfl">DEN</span><span class="ppg">12.3</span><span class="paid">$21</span><span class="valc">$22</span><span class="sur ">+1</span></li>
+<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Travis Kelce</span><span class="nfl">KC</span><span class="ppg">9.4</span><span class="paid">$4</span><span class="valc">$12</span><span class="sur up">+8</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX1</span><span class="pn">Rico Dowdle</span><span class="nfl">PIT</span><span class="ppg">13.5</span><span class="paid">$2</span><span class="valc">$15</span><span class="sur up">+13</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX2</span><span class="pn">Jameson Williams</span><span class="nfl">DET</span><span class="ppg">12.0</span><span class="paid">$8</span><span class="valc">$20</span><span class="sur up">+12</span></li>
+<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Justin Herbert</span><span class="nfl">LAC</span><span class="ppg">22.0</span><span class="paid">$29</span><span class="valc">$10</span><span class="sur down">-19</span></li>
+<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Denver Broncos</span><span class="nfl">DEN</span><span class="ppg">7.0</span><span class="paid">$2</span><span class="valc">$7</span><span class="sur ">+5</span></li></ul>
   <details><summary>Bench &amp; depth &#183; top-3 bench 44.3 ppg &#183; draft surplus +21</summary>
-    <ul class="plist bench"><li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Sam Darnold</span><span class="nfl">SEA</span><span class="ppg">21.2</span><span class="dlt up">+7.8</span><span class="paid">$5</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Christian Watson</span><span class="nfl">GB</span><span class="ppg">11.8</span><span class="dlt up">+4.1</span><span class="paid">$6</span><span class="sur up">+13</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Tony Pollard</span><span class="nfl">TEN</span><span class="ppg">11.3</span><span class="dlt up">+2.5</span><span class="paid">$3</span><span class="sur ">-2</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Garrett Wilson</span><span class="nfl">NYJ</span><span class="ppg">10.8</span><span class="dlt ">+0.7</span><span class="paid">$13</span><span class="sur ">-1</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Jordan Addison</span><span class="nfl">MIN</span><span class="ppg">9.6</span><span class="dlt up">+3.9</span><span class="paid">$1</span><span class="sur ">+3</span></li></ul>
+    <ul class="plist bench"><li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Sam Darnold</span><span class="nfl">SEA</span><span class="ppg">21.2</span><span class="paid">$5</span><span class="valc">$5</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Christian Watson</span><span class="nfl">GB</span><span class="ppg">11.8</span><span class="paid">$6</span><span class="valc">$19</span><span class="sur up">+13</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Tony Pollard</span><span class="nfl">TEN</span><span class="ppg">11.3</span><span class="paid">$3</span><span class="valc">$1</span><span class="sur ">-2</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Garrett Wilson</span><span class="nfl">NYJ</span><span class="ppg">10.8</span><span class="paid">$13</span><span class="valc">$12</span><span class="sur ">-1</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Jordan Addison</span><span class="nfl">MIN</span><span class="ppg">9.6</span><span class="paid">$1</span><span class="valc">$4</span><span class="sur ">+3</span></li></ul>
   </details>
 </article><article class="lot">
   <header class="lot-h"><span class="num">02</span>
-    <div class="idw"><h3>Uncs Gone Wild</h3><p class="owner">markdeeezy</p><span class="badge down">-1 vs board</span></div>
+    <div class="idw"><h3>Uncs Gone Wild</h3><p class="owner">markdeeezy</p></div>
     <div class="kpis">
       <div class="kpi"><b>154.9</b><em>proj PPG</em></div>
       <div class="kpi"><b>18.5<i>-9.5</i></b><em>record /28</em></div>
       <div class="kpi"><b>91%</b><em>playoffs</em></div>
-      <div class="kpi hero"><b>26.0%</b><em>title</em>
-        <span class="was">was 26.9%</span></div>
+      <div class="kpi hero"><b>26.0%</b><em>title</em></div>
     </div>
   </header>
   <div class="budget"><span class="seg bar-QB" style="flex:29" title="QB: $29 of $200"><em>QB</em><b>$29</b></span><span class="seg bar-RB" style="flex:56" title="RB: $56 of $200"><em>RB</em><b>$56</b></span><span class="seg bar-WR" style="flex:102" title="WR: $102 of $200"><em>WR</em><b>$102</b></span><span class="seg bar-TE" style="flex:12" title="TE: $12 of $200"><em>TE</em></span><span class="seg bar-DEF" style="flex:1" title="DEF: $1 of $200"></span></div>
-  <p class="note">The only roster in the top two under both projection sources, which is the strongest thing that can be said about any team here. It never needed the quarterback arbitrage to be real &mdash; Stafford and Mahomes at $24 are reasonable either way &mdash; and the $102 receiver room does the work. If you have no idea which projection source to believe, this is the roster you want.</p>
-  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Patrick Mahomes</span><span class="nfl">KC</span><span class="ppg">22.5</span><span class="dlt up">+5.1</span><span class="paid">$14</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Breece Hall</span><span class="nfl">NYJ</span><span class="ppg">16.2</span><span class="dlt up">+4.1</span><span class="paid">$27</span><span class="sur up">+6</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Jeremiyah Love</span><span class="nfl">ARI</span><span class="ppg">15.8</span><span class="dlt up">+3.0</span><span class="paid">$25</span><span class="sur ">+5</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Jaxon Smith-Njigba</span><span class="nfl">SEA</span><span class="ppg">17.5</span><span class="dlt up">+3.4</span><span class="paid">$54</span><span class="sur ">+2</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">Terry McLaurin</span><span class="nfl">WAS</span><span class="ppg">11.5</span><span class="dlt up">+3.1</span><span class="paid">$10</span><span class="sur up">+7</span></li>
-<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Tyler Warren</span><span class="nfl">IND</span><span class="ppg">10.6</span><span class="dlt up">+1.8</span><span class="paid">$10</span><span class="sur up">+10</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX1</span><span class="pn">Chuba Hubbard</span><span class="nfl">CAR</span><span class="ppg">11.7</span><span class="dlt up">+3.8</span><span class="paid">$1</span><span class="sur ">+3</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX2</span><span class="pn">Malik Nabers</span><span class="nfl">NYG</span><span class="ppg">10.6</span><span class="dlt ">+0.2</span><span class="paid">$31</span><span class="sur down">-20</span></li>
-<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Matthew Stafford</span><span class="nfl">LAR</span><span class="ppg">21.0</span><span class="dlt ">-0.4</span><span class="paid">$10</span><span class="sur down">-6</span></li>
-<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Los Angeles Rams</span><span class="nfl">LAR</span><span class="ppg">7.7</span><span class="dlt ">+1.0</span><span class="paid">$1</span><span class="sur up">+10</span></li></ul>
+  <p class="note">The most balanced roster in the league. Stafford and Mahomes cover both quarterback seats for $24 combined, which freed $102 for five wide receivers, and nothing here is a single point of failure &mdash; its top two players are only 31% of its starting output, the lowest concentration in the room. The soft spot is a backfield of $56 across four backs, leaning on a rookie to hold RB1.</p>
+  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Patrick Mahomes</span><span class="nfl">KC</span><span class="ppg">22.5</span><span class="paid">$14</span><span class="valc">$14</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Breece Hall</span><span class="nfl">NYJ</span><span class="ppg">16.2</span><span class="paid">$27</span><span class="valc">$33</span><span class="sur up">+6</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Jeremiyah Love</span><span class="nfl">ARI</span><span class="ppg">15.8</span><span class="paid">$25</span><span class="valc">$30</span><span class="sur ">+5</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Jaxon Smith-Njigba</span><span class="nfl">SEA</span><span class="ppg">17.5</span><span class="paid">$54</span><span class="valc">$56</span><span class="sur ">+2</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">Terry McLaurin</span><span class="nfl">WAS</span><span class="ppg">11.5</span><span class="paid">$10</span><span class="valc">$17</span><span class="sur up">+7</span></li>
+<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Tyler Warren</span><span class="nfl">IND</span><span class="ppg">10.6</span><span class="paid">$10</span><span class="valc">$20</span><span class="sur up">+10</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX1</span><span class="pn">Chuba Hubbard</span><span class="nfl">CAR</span><span class="ppg">11.7</span><span class="paid">$1</span><span class="valc">$4</span><span class="sur ">+3</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX2</span><span class="pn">Malik Nabers</span><span class="nfl">NYG</span><span class="ppg">10.6</span><span class="paid">$31</span><span class="valc">$11</span><span class="sur down">-20</span></li>
+<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Matthew Stafford</span><span class="nfl">LAR</span><span class="ppg">21.0</span><span class="paid">$10</span><span class="valc">$4</span><span class="sur down">-6</span></li>
+<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Los Angeles Rams</span><span class="nfl">LAR</span><span class="ppg">7.7</span><span class="paid">$1</span><span class="valc">$11</span><span class="sur up">+10</span></li></ul>
   <details><summary>Bench &amp; depth &#183; top-3 bench 40.4 ppg &#183; draft surplus +21</summary>
-    <ul class="plist bench"><li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Tua Tagovailoa</span><span class="nfl">ATL</span><span class="ppg">20.6</span><span class="dlt up">+9.0</span><span class="paid">$5</span><span class="sur ">-4</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Jacory Croskey-Merritt</span><span class="nfl">WAS</span><span class="ppg">10.1</span><span class="dlt up">+3.6</span><span class="paid">$3</span><span class="sur ">-2</span></li>
-<li class="p-row"><span class="dot p-TE"></span><span class="slot bn">BN</span><span class="pn">George Kittle</span><span class="nfl">SF</span><span class="ppg">9.7</span><span class="dlt up">+2.3</span><span class="paid">$2</span><span class="sur up">+12</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Michael Wilson</span><span class="nfl">ARI</span><span class="ppg">9.4</span><span class="dlt up">+2.6</span><span class="paid">$4</span><span class="sur ">-1</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Carnell Tate</span><span class="nfl">TEN</span><span class="ppg">9.2</span><span class="dlt up">+2.8</span><span class="paid">$3</span><span class="sur ">-1</span></li></ul>
+    <ul class="plist bench"><li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Tua Tagovailoa</span><span class="nfl">ATL</span><span class="ppg">20.6</span><span class="paid">$5</span><span class="valc">$1</span><span class="sur ">-4</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Jacory Croskey-Merritt</span><span class="nfl">WAS</span><span class="ppg">10.1</span><span class="paid">$3</span><span class="valc">$1</span><span class="sur ">-2</span></li>
+<li class="p-row"><span class="dot p-TE"></span><span class="slot bn">BN</span><span class="pn">George Kittle</span><span class="nfl">SF</span><span class="ppg">9.7</span><span class="paid">$2</span><span class="valc">$14</span><span class="sur up">+12</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Michael Wilson</span><span class="nfl">ARI</span><span class="ppg">9.4</span><span class="paid">$4</span><span class="valc">$3</span><span class="sur ">-1</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Carnell Tate</span><span class="nfl">TEN</span><span class="ppg">9.2</span><span class="paid">$3</span><span class="valc">$2</span><span class="sur ">-1</span></li></ul>
   </details>
 </article><article class="lot">
   <header class="lot-h"><span class="num">03</span>
-    <div class="idw"><h3>Fist My Bump</h3><p class="owner">Heinzwithfries</p><span class="badge up">+1 vs board</span></div>
+    <div class="idw"><h3>Fist My Bump</h3><p class="owner">Heinzwithfries</p></div>
     <div class="kpis">
       <div class="kpi"><b>151.2</b><em>proj PPG</em></div>
       <div class="kpi"><b>16.9<i>-11.1</i></b><em>record /28</em></div>
       <div class="kpi"><b>81%</b><em>playoffs</em></div>
-      <div class="kpi hero"><b>14.8%</b><em>title</em>
-        <span class="was">was 10.9%</span></div>
+      <div class="kpi hero"><b>14.8%</b><em>title</em></div>
     </div>
   </header>
   <div class="budget"><span class="seg bar-QB" style="flex:25" title="QB: $25 of $200"><em>QB</em><b>$25</b></span><span class="seg bar-RB" style="flex:101" title="RB: $101 of $200"><em>RB</em><b>$101</b></span><span class="seg bar-WR" style="flex:70" title="WR: $70 of $200"><em>WR</em><b>$70</b></span><span class="seg bar-TE" style="flex:3" title="TE: $3 of $200"></span><span class="seg bar-DEF" style="flex:1" title="DEF: $1 of $200"></span></div>
-  <p class="note">Same $101 running back room, opposite verdict. On the board it was the expensive position bought at a premium; here Cook and Walker are top-12 backs in a market Sleeper prices as fair. And Daniel Jones at $4 in SUPER_FLEX, the flaw that capped this team on the board, costs almost nothing once the replacement quarterback is 20.6 ppg.</p>
-  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Trevor Lawrence</span><span class="nfl">JAX</span><span class="ppg">21.6</span><span class="dlt up">+2.6</span><span class="paid">$20</span><span class="sur down">-13</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">James Cook</span><span class="nfl">BUF</span><span class="ppg">19.4</span><span class="dlt up">+3.6</span><span class="paid">$49</span><span class="sur ">+4</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Kenneth Walker</span><span class="nfl">KC</span><span class="ppg">16.7</span><span class="dlt up">+3.2</span><span class="paid">$46</span><span class="sur down">-10</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Puka Nacua</span><span class="nfl">LAR</span><span class="ppg">17.1</span><span class="dlt up">+1.5</span><span class="paid">$52</span><span class="sur ">+1</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">Mike Evans</span><span class="nfl">SF</span><span class="ppg">11.3</span><span class="dlt up">+3.4</span><span class="paid">$4</span><span class="sur up">+11</span></li>
-<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Dallas Goedert</span><span class="nfl">PHI</span><span class="ppg">7.8</span><span class="dlt up">+1.7</span><span class="paid">$1</span><span class="sur ">+1</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX1</span><span class="pn">Rhamondre Stevenson</span><span class="nfl">NE</span><span class="ppg">12.5</span><span class="dlt up">+3.0</span><span class="paid">$3</span><span class="sur ">+5</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX2</span><span class="pn">Jayden Reed</span><span class="nfl">GB</span><span class="ppg">11.2</span><span class="dlt up">+5.1</span><span class="paid">$1</span><span class="sur up">+14</span></li>
-<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Daniel Jones</span><span class="nfl">IND</span><span class="ppg">20.0</span><span class="dlt up">+7.2</span><span class="paid">$4</span><span class="sur ">-3</span></li>
-<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Baltimore Ravens</span><span class="nfl">BAL</span><span class="ppg">6.7</span><span class="dlt ">-0.8</span><span class="paid">$1</span><span class="sur ">+4</span></li></ul>
+  <p class="note">$101 on the running back room buys the position where the spread actually is: Cook and Walker both project as top-12 backs. And Daniel Jones at $4 in SUPER_FLEX costs almost nothing when the 24th-best quarterback projects 20.6 ppg. Efficient in precisely the way this format rewards.</p>
+  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Trevor Lawrence</span><span class="nfl">JAX</span><span class="ppg">21.6</span><span class="paid">$20</span><span class="valc">$7</span><span class="sur down">-13</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">James Cook</span><span class="nfl">BUF</span><span class="ppg">19.4</span><span class="paid">$49</span><span class="valc">$53</span><span class="sur ">+4</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Kenneth Walker</span><span class="nfl">KC</span><span class="ppg">16.7</span><span class="paid">$46</span><span class="valc">$36</span><span class="sur down">-10</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Puka Nacua</span><span class="nfl">LAR</span><span class="ppg">17.1</span><span class="paid">$52</span><span class="valc">$53</span><span class="sur ">+1</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">Mike Evans</span><span class="nfl">SF</span><span class="ppg">11.3</span><span class="paid">$4</span><span class="valc">$15</span><span class="sur up">+11</span></li>
+<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Dallas Goedert</span><span class="nfl">PHI</span><span class="ppg">7.8</span><span class="paid">$1</span><span class="valc">$2</span><span class="sur ">+1</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX1</span><span class="pn">Rhamondre Stevenson</span><span class="nfl">NE</span><span class="ppg">12.5</span><span class="paid">$3</span><span class="valc">$8</span><span class="sur ">+5</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX2</span><span class="pn">Jayden Reed</span><span class="nfl">GB</span><span class="ppg">11.2</span><span class="paid">$1</span><span class="valc">$15</span><span class="sur up">+14</span></li>
+<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Daniel Jones</span><span class="nfl">IND</span><span class="ppg">20.0</span><span class="paid">$4</span><span class="valc">$1</span><span class="sur ">-3</span></li>
+<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Baltimore Ravens</span><span class="nfl">BAL</span><span class="ppg">6.7</span><span class="paid">$1</span><span class="valc">$5</span><span class="sur ">+4</span></li></ul>
   <details><summary>Bench &amp; depth &#183; top-3 bench 37.3 ppg &#183; draft surplus +8</summary>
-    <ul class="plist bench"><li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Aaron Rodgers</span><span class="nfl">PIT</span><span class="ppg">18.0</span><span class="dlt up">+9.2</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Parker Washington</span><span class="nfl">JAX</span><span class="ppg">9.7</span><span class="dlt up">+2.3</span><span class="paid">$5</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Rome Odunze</span><span class="nfl">CHI</span><span class="ppg">9.6</span><span class="dlt up">+1.6</span><span class="paid">$8</span><span class="sur ">-3</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Jonathon Brooks</span><span class="nfl">CAR</span><span class="ppg">9.3</span><span class="dlt up">+1.9</span><span class="paid">$3</span><span class="sur ">-2</span></li>
-<li class="p-row"><span class="dot p-TE"></span><span class="slot bn">BN</span><span class="pn">Dalton Kincaid</span><span class="nfl">BUF</span><span class="ppg">7.4</span><span class="dlt up">+2.2</span><span class="paid">$2</span><span class="sur ">-1</span></li></ul>
+    <ul class="plist bench"><li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Aaron Rodgers</span><span class="nfl">PIT</span><span class="ppg">18.0</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Parker Washington</span><span class="nfl">JAX</span><span class="ppg">9.7</span><span class="paid">$5</span><span class="valc">$5</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Rome Odunze</span><span class="nfl">CHI</span><span class="ppg">9.6</span><span class="paid">$8</span><span class="valc">$5</span><span class="sur ">-3</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Jonathon Brooks</span><span class="nfl">CAR</span><span class="ppg">9.3</span><span class="paid">$3</span><span class="valc">$1</span><span class="sur ">-2</span></li>
+<li class="p-row"><span class="dot p-TE"></span><span class="slot bn">BN</span><span class="pn">Dalton Kincaid</span><span class="nfl">BUF</span><span class="ppg">7.4</span><span class="paid">$2</span><span class="valc">$1</span><span class="sur ">-1</span></li></ul>
   </details>
 </article><article class="lot">
   <header class="lot-h"><span class="num">04</span>
-    <div class="idw"><h3>Mood Killer</h3><p class="owner">TMACattack77</p><span class="badge up">+5 vs board</span></div>
+    <div class="idw"><h3>Mood Killer</h3><p class="owner">TMACattack77</p></div>
     <div class="kpis">
       <div class="kpi"><b>148.7</b><em>proj PPG</em></div>
       <div class="kpi"><b>15.7<i>-12.3</i></b><em>record /28</em></div>
       <div class="kpi"><b>70%</b><em>playoffs</em></div>
-      <div class="kpi hero"><b>9.7%</b><em>title</em>
-        <span class="was">was 2.3%</span></div>
+      <div class="kpi hero"><b>9.7%</b><em>title</em></div>
     </div>
   </header>
   <div class="budget"><span class="seg bar-QB" style="flex:22" title="QB: $22 of $200"><em>QB</em><b>$22</b></span><span class="seg bar-RB" style="flex:79" title="RB: $79 of $200"><em>RB</em><b>$79</b></span><span class="seg bar-WR" style="flex:89" title="WR: $89 of $200"><em>WR</em><b>$89</b></span><span class="seg bar-TE" style="flex:9" title="TE: $9 of $200"><em>TE</em></span><span class="seg bar-DEF" style="flex:1" title="DEF: $1 of $200"></span></div>
-  <p class="note">The biggest riser in the league, up five places. Its own board flagged Achane as a fade and Jacobs as a strong fade; Sleeper makes them +$13 and +$15 of surplus. Seven running backs in a market these numbers call fairly priced, plus the cheapest quarterback room of any contender at $22, turns the worst draft on the board into the fourth-best roster here.</p>
-  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Kyler Murray</span><span class="nfl">MIN</span><span class="ppg">21.5</span><span class="dlt up">+6.3</span><span class="paid">$17</span><span class="sur down">-10</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">De&#x27;Von Achane</span><span class="nfl">MIA</span><span class="ppg">18.4</span><span class="dlt up">+2.0</span><span class="paid">$34</span><span class="sur up">+13</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Javonte Williams</span><span class="nfl">DAL</span><span class="ppg">16.1</span><span class="dlt up">+4.3</span><span class="paid">$31</span><span class="sur ">+1</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Drake London</span><span class="nfl">ATL</span><span class="ppg">13.8</span><span class="dlt up">+1.6</span><span class="paid">$31</span><span class="sur ">+1</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">George Pickens</span><span class="nfl">DAL</span><span class="ppg">13.0</span><span class="dlt up">+1.9</span><span class="paid">$33</span><span class="sur down">-6</span></li>
-<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Sam LaPorta</span><span class="nfl">DET</span><span class="ppg">9.9</span><span class="dlt up">+3.5</span><span class="paid">$9</span><span class="sur up">+6</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX1</span><span class="pn">Josh Jacobs</span><span class="nfl">GB</span><span class="ppg">16.0</span><span class="dlt up">+7.5</span><span class="paid">$8</span><span class="sur up">+15</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX2</span><span class="pn">Rashee Rice</span><span class="nfl">KC</span><span class="ppg">12.7</span><span class="dlt ">+1.1</span><span class="paid">$25</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">C.J. Stroud</span><span class="nfl">HOU</span><span class="ppg">20.6</span><span class="dlt up">+8.4</span><span class="paid">$4</span><span class="sur ">-3</span></li>
-<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Minnesota Vikings</span><span class="nfl">MIN</span><span class="ppg">6.1</span><span class="dlt ">-1.3</span><span class="paid">$1</span><span class="sur ">+0</span></li></ul>
+  <p class="note">Seven running backs, and the projections like most of them &mdash; Achane is +$13 of surplus, Jacobs +$15. The quarterback room cost $22 in total, the cheapest of any contender, which is close to the correct amount to spend when quarterbacks are nearly free. What caps it is that only three of those backs can start in a given week.</p>
+  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Kyler Murray</span><span class="nfl">MIN</span><span class="ppg">21.5</span><span class="paid">$17</span><span class="valc">$7</span><span class="sur down">-10</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">De&#x27;Von Achane</span><span class="nfl">MIA</span><span class="ppg">18.4</span><span class="paid">$34</span><span class="valc">$47</span><span class="sur up">+13</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Javonte Williams</span><span class="nfl">DAL</span><span class="ppg">16.1</span><span class="paid">$31</span><span class="valc">$32</span><span class="sur ">+1</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Drake London</span><span class="nfl">ATL</span><span class="ppg">13.8</span><span class="paid">$31</span><span class="valc">$32</span><span class="sur ">+1</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">George Pickens</span><span class="nfl">DAL</span><span class="ppg">13.0</span><span class="paid">$33</span><span class="valc">$27</span><span class="sur down">-6</span></li>
+<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Sam LaPorta</span><span class="nfl">DET</span><span class="ppg">9.9</span><span class="paid">$9</span><span class="valc">$15</span><span class="sur up">+6</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX1</span><span class="pn">Josh Jacobs<span class="gms">12g</span></span><span class="nfl">GB</span><span class="ppg">16.0</span><span class="paid">$8</span><span class="valc">$23</span><span class="sur up">+15</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX2</span><span class="pn">Rashee Rice</span><span class="nfl">KC</span><span class="ppg">12.7</span><span class="paid">$25</span><span class="valc">$25</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">C.J. Stroud</span><span class="nfl">HOU</span><span class="ppg">20.6</span><span class="paid">$4</span><span class="valc">$1</span><span class="sur ">-3</span></li>
+<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Minnesota Vikings</span><span class="nfl">MIN</span><span class="ppg">6.1</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li></ul>
   <details><summary>Bench &amp; depth &#183; top-3 bench 38.7 ppg &#183; draft surplus +15</summary>
-    <ul class="plist bench"><li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Kirk Cousins</span><span class="nfl">LV</span><span class="ppg">18.3</span><span class="dlt up">+11.4</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Blake Corum</span><span class="nfl">LAR</span><span class="ppg">10.4</span><span class="dlt up">+4.4</span><span class="paid">$3</span><span class="sur ">-2</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Rachaad White</span><span class="nfl">WAS</span><span class="ppg">10.0</span><span class="dlt up">+3.7</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Kenny Gainwell</span><span class="nfl">TB</span><span class="ppg">9.4</span><span class="dlt up">+1.9</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Tyjae Spears</span><span class="nfl">TEN</span><span class="ppg">7.3</span><span class="dlt ">+1.4</span><span class="paid">$1</span><span class="sur ">+0</span></li></ul>
+    <ul class="plist bench"><li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Kirk Cousins<span class="gms">2g</span></span><span class="nfl">LV</span><span class="ppg">18.3</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Blake Corum</span><span class="nfl">LAR</span><span class="ppg">10.4</span><span class="paid">$3</span><span class="valc">$1</span><span class="sur ">-2</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Rachaad White</span><span class="nfl">WAS</span><span class="ppg">10.0</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Kenny Gainwell</span><span class="nfl">TB</span><span class="ppg">9.4</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Tyjae Spears</span><span class="nfl">TEN</span><span class="ppg">7.3</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li></ul>
   </details>
 </article><article class="lot">
   <header class="lot-h"><span class="num">05</span>
-    <div class="idw"><h3>Caleb Williams Fan Club</h3><p class="owner">stmahmood8</p><span class="badge up">+1 vs board</span></div>
+    <div class="idw"><h3>Caleb Williams Fan Club</h3><p class="owner">stmahmood8</p></div>
     <div class="kpis">
       <div class="kpi"><b>146.7</b><em>proj PPG</em></div>
       <div class="kpi"><b>14.8<i>-13.2</i></b><em>record /28</em></div>
       <div class="kpi"><b>58%</b><em>playoffs</em></div>
-      <div class="kpi hero"><b>6.6%</b><em>title</em>
-        <span class="was">was 4.3%</span></div>
+      <div class="kpi hero"><b>6.6%</b><em>title</em></div>
     </div>
   </header>
   <div class="budget"><span class="seg bar-QB" style="flex:44" title="QB: $44 of $200"><em>QB</em><b>$44</b></span><span class="seg bar-RB" style="flex:119" title="RB: $119 of $200"><em>RB</em><b>$119</b></span><span class="seg bar-WR" style="flex:32" title="WR: $32 of $200"><em>WR</em><b>$32</b></span><span class="seg bar-TE" style="flex:4" title="TE: $4 of $200"></span><span class="seg bar-DEF" style="flex:1" title="DEF: $1 of $200"></span></div>
-  <p class="note">Taylor and Barkley still anchor it. The difference is that the $44 spent on Nix and Dart, which read as a disqualifying deficit on the board, costs about 3 ppg here rather than 12. Warren at $5 is a $14 surplus. Same roster, and the thing that was supposed to sink it turns out not to matter much.</p>
-  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Jaxson Dart</span><span class="nfl">NYG</span><span class="ppg">23.1</span><span class="dlt up">+6.7</span><span class="paid">$25</span><span class="sur down">-8</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Jonathan Taylor</span><span class="nfl">IND</span><span class="ppg">21.2</span><span class="dlt up">+4.2</span><span class="paid">$58</span><span class="sur up">+7</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Saquon Barkley</span><span class="nfl">PHI</span><span class="ppg">16.9</span><span class="dlt up">+2.6</span><span class="paid">$46</span><span class="sur down">-9</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Tetairoa McMillan</span><span class="nfl">CAR</span><span class="ppg">11.9</span><span class="dlt up">+2.2</span><span class="paid">$16</span><span class="sur ">+4</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">Davante Adams</span><span class="nfl">LAR</span><span class="ppg">10.4</span><span class="dlt ">+1.4</span><span class="paid">$11</span><span class="sur ">-1</span></li>
-<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Kyle Pitts</span><span class="nfl">ATL</span><span class="ppg">9.2</span><span class="dlt ">+1.4</span><span class="paid">$4</span><span class="sur up">+7</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX1</span><span class="pn">Jaylen Warren</span><span class="nfl">PIT</span><span class="ppg">14.1</span><span class="dlt up">+4.9</span><span class="paid">$5</span><span class="sur up">+14</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX2</span><span class="pn">TreVeyon Henderson</span><span class="nfl">NE</span><span class="ppg">12.7</span><span class="dlt up">+3.7</span><span class="paid">$8</span><span class="sur ">+2</span></li>
-<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Bo Nix</span><span class="nfl">DEN</span><span class="ppg">22.1</span><span class="dlt up">+5.2</span><span class="paid">$19</span><span class="sur down">-8</span></li>
-<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Pittsburgh Steelers</span><span class="nfl">PIT</span><span class="ppg">6.0</span><span class="dlt ">-1.2</span><span class="paid">$1</span><span class="sur ">+0</span></li></ul>
+  <p class="note">Taylor and Barkley are the best running back pair in the league and the depth behind them is genuine &mdash; Warren at $5 is +$14 of surplus. Nix and Dart at $44 is more than this format requires at quarterback, but the cost of that is about 3 ppg, which a roster this deep at running back can absorb.</p>
+  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Jaxson Dart</span><span class="nfl">NYG</span><span class="ppg">23.1</span><span class="paid">$25</span><span class="valc">$17</span><span class="sur down">-8</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Jonathan Taylor</span><span class="nfl">IND</span><span class="ppg">21.2</span><span class="paid">$58</span><span class="valc">$65</span><span class="sur up">+7</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Saquon Barkley</span><span class="nfl">PHI</span><span class="ppg">16.9</span><span class="paid">$46</span><span class="valc">$37</span><span class="sur down">-9</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Tetairoa McMillan</span><span class="nfl">CAR</span><span class="ppg">11.9</span><span class="paid">$16</span><span class="valc">$20</span><span class="sur ">+4</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">Davante Adams</span><span class="nfl">LAR</span><span class="ppg">10.4</span><span class="paid">$11</span><span class="valc">$10</span><span class="sur ">-1</span></li>
+<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Kyle Pitts</span><span class="nfl">ATL</span><span class="ppg">9.2</span><span class="paid">$4</span><span class="valc">$11</span><span class="sur up">+7</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX1</span><span class="pn">Jaylen Warren</span><span class="nfl">PIT</span><span class="ppg">14.1</span><span class="paid">$5</span><span class="valc">$19</span><span class="sur up">+14</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX2</span><span class="pn">TreVeyon Henderson</span><span class="nfl">NE</span><span class="ppg">12.7</span><span class="paid">$8</span><span class="valc">$10</span><span class="sur ">+2</span></li>
+<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Bo Nix</span><span class="nfl">DEN</span><span class="ppg">22.1</span><span class="paid">$19</span><span class="valc">$11</span><span class="sur down">-8</span></li>
+<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Pittsburgh Steelers</span><span class="nfl">PIT</span><span class="ppg">6.0</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li></ul>
   <details><summary>Bench &amp; depth &#183; top-3 bench 26.1 ppg &#183; draft surplus +6</summary>
-    <ul class="plist bench"><li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Marvin Harrison</span><span class="nfl">ARI</span><span class="ppg">9.1</span><span class="dlt up">+1.8</span><span class="paid">$3</span><span class="sur ">-2</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Matthew Golden</span><span class="nfl">GB</span><span class="ppg">8.5</span><span class="dlt up">+3.1</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Romeo Doubs</span><span class="nfl">NE</span><span class="ppg">8.5</span><span class="dlt up">+3.2</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Dylan Sampson</span><span class="nfl">CLE</span><span class="ppg">6.9</span><span class="dlt up">+3.1</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Tank Bigsby</span><span class="nfl">PHI</span><span class="ppg">4.4</span><span class="dlt ">+0.7</span><span class="paid">$1</span><span class="sur ">+0</span></li></ul>
+    <ul class="plist bench"><li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Marvin Harrison</span><span class="nfl">ARI</span><span class="ppg">9.1</span><span class="paid">$3</span><span class="valc">$1</span><span class="sur ">-2</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Matthew Golden</span><span class="nfl">GB</span><span class="ppg">8.5</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Romeo Doubs</span><span class="nfl">NE</span><span class="ppg">8.5</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Dylan Sampson</span><span class="nfl">CLE</span><span class="ppg">6.9</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Tank Bigsby</span><span class="nfl">PHI</span><span class="ppg">4.4</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li></ul>
   </details>
 </article><article class="lot">
   <header class="lot-h"><span class="num">06</span>
-    <div class="idw"><h3>SexWithCresIsBest</h3><p class="owner">RDizzlez</p><span class="badge up">+2 vs board</span></div>
+    <div class="idw"><h3>SexWithCresIsBest</h3><p class="owner">RDizzlez</p></div>
     <div class="kpis">
       <div class="kpi"><b>145.3</b><em>proj PPG</em></div>
       <div class="kpi"><b>14.2<i>-13.8</i></b><em>record /28</em></div>
       <div class="kpi"><b>52%</b><em>playoffs</em></div>
-      <div class="kpi hero"><b>5.0%</b><em>title</em>
-        <span class="was">was 3.6%</span></div>
+      <div class="kpi hero"><b>5.0%</b><em>title</em></div>
     </div>
   </header>
   <div class="budget"><span class="seg bar-QB" style="flex:30" title="QB: $30 of $200"><em>QB</em><b>$30</b></span><span class="seg bar-RB" style="flex:63" title="RB: $63 of $200"><em>RB</em><b>$63</b></span><span class="seg bar-WR" style="flex:72" title="WR: $72 of $200"><em>WR</em><b>$72</b></span><span class="seg bar-TE" style="flex:34" title="TE: $34 of $200"><em>TE</em><b>$34</b></span><span class="seg bar-DEF" style="flex:1" title="DEF: $1 of $200"></span></div>
-  <p class="note">Purdy at $16 is the single best quarterback buy in the league on these numbers &mdash; 24.1 ppg, fourth among all QBs, for less than a sixth of what Crimson Bears paid for Allen. Montgomery at $15 is +$18 and McBride is still the best tight end. The age profile is unchanged and still the risk.</p>
-  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Brock Purdy</span><span class="nfl">SF</span><span class="ppg">24.1</span><span class="dlt up">+4.0</span><span class="paid">$16</span><span class="sur up">+8</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Derrick Henry</span><span class="nfl">BAL</span><span class="ppg">18.2</span><span class="dlt up">+3.4</span><span class="paid">$46</span><span class="sur ">-1</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">David Montgomery</span><span class="nfl">HOU</span><span class="ppg">16.3</span><span class="dlt up">+6.6</span><span class="paid">$15</span><span class="sur up">+18</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Nico Collins</span><span class="nfl">HOU</span><span class="ppg">14.6</span><span class="dlt up">+3.8</span><span class="paid">$30</span><span class="sur up">+7</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">A.J. Brown</span><span class="nfl">NE</span><span class="ppg">13.7</span><span class="dlt up">+1.8</span><span class="paid">$35</span><span class="sur ">-4</span></li>
-<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Trey McBride</span><span class="nfl">ARI</span><span class="ppg">12.3</span><span class="dlt ">+0.7</span><span class="paid">$33</span><span class="sur ">-2</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX1</span><span class="pn">Jordan Mason</span><span class="nfl">MIN</span><span class="ppg">10.6</span><span class="dlt up">+4.0</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX2</span><span class="pn">Stefon Diggs</span><span class="nfl">WAS</span><span class="ppg">9.0</span><span class="dlt up">+3.1</span><span class="paid">$2</span><span class="sur ">-1</span></li>
-<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Baker Mayfield</span><span class="nfl">TB</span><span class="ppg">20.8</span><span class="dlt up">+5.0</span><span class="paid">$13</span><span class="sur down">-11</span></li>
-<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Jacksonville Jaguars</span><span class="nfl">JAX</span><span class="ppg">6.6</span><span class="dlt ">+0.0</span><span class="paid">$1</span><span class="sur ">+4</span></li></ul>
+  <p class="note">Purdy at $16 is the best quarterback buy in the draft: 24.1 ppg, fourth-best at the position, for less than a third of what the top of the market went for. Montgomery at $15 is +$18 and McBride is the league's best tight end. The risk is age &mdash; $46 on a 32-year-old Henry is the roster's largest bet and its most fragile.</p>
+  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Brock Purdy</span><span class="nfl">SF</span><span class="ppg">24.1</span><span class="paid">$16</span><span class="valc">$24</span><span class="sur up">+8</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Derrick Henry</span><span class="nfl">BAL</span><span class="ppg">18.2</span><span class="paid">$46</span><span class="valc">$45</span><span class="sur ">-1</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">David Montgomery</span><span class="nfl">HOU</span><span class="ppg">16.3</span><span class="paid">$15</span><span class="valc">$33</span><span class="sur up">+18</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Nico Collins</span><span class="nfl">HOU</span><span class="ppg">14.6</span><span class="paid">$30</span><span class="valc">$37</span><span class="sur up">+7</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">A.J. Brown</span><span class="nfl">NE</span><span class="ppg">13.7</span><span class="paid">$35</span><span class="valc">$31</span><span class="sur ">-4</span></li>
+<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Trey McBride</span><span class="nfl">ARI</span><span class="ppg">12.3</span><span class="paid">$33</span><span class="valc">$31</span><span class="sur ">-2</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX1</span><span class="pn">Jordan Mason</span><span class="nfl">MIN</span><span class="ppg">10.6</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX2</span><span class="pn">Stefon Diggs</span><span class="nfl">WAS</span><span class="ppg">9.0</span><span class="paid">$2</span><span class="valc">$1</span><span class="sur ">-1</span></li>
+<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Baker Mayfield</span><span class="nfl">TB</span><span class="ppg">20.8</span><span class="paid">$13</span><span class="valc">$2</span><span class="sur down">-11</span></li>
+<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Jacksonville Jaguars</span><span class="nfl">JAX</span><span class="ppg">6.6</span><span class="paid">$1</span><span class="valc">$5</span><span class="sur ">+4</span></li></ul>
   <details><summary>Bench &amp; depth &#183; top-3 bench 25.4 ppg &#183; draft surplus +15</summary>
-    <ul class="plist bench"><li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Khalil Shakir</span><span class="nfl">BUF</span><span class="ppg">8.9</span><span class="dlt up">+3.3</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Chris Godwin</span><span class="nfl">TB</span><span class="ppg">8.8</span><span class="dlt up">+2.3</span><span class="paid">$4</span><span class="sur ">-3</span></li>
-<li class="p-row"><span class="dot p-TE"></span><span class="slot bn">BN</span><span class="pn">Jake Ferguson</span><span class="nfl">DAL</span><span class="ppg">7.7</span><span class="dlt up">+2.1</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Tyler Allgeier</span><span class="nfl">ARI</span><span class="ppg">6.6</span><span class="dlt up">+2.1</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Michael Penix</span><span class="nfl">ATL</span><span class="ppg">0.0</span><span class="dlt down">-9.9</span><span class="paid">$1</span><span class="sur ">+0</span></li></ul>
+    <ul class="plist bench"><li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Khalil Shakir</span><span class="nfl">BUF</span><span class="ppg">8.9</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Chris Godwin</span><span class="nfl">TB</span><span class="ppg">8.8</span><span class="paid">$4</span><span class="valc">$1</span><span class="sur ">-3</span></li>
+<li class="p-row"><span class="dot p-TE"></span><span class="slot bn">BN</span><span class="pn">Jake Ferguson</span><span class="nfl">DAL</span><span class="ppg">7.7</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Tyler Allgeier</span><span class="nfl">ARI</span><span class="ppg">6.6</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Michael Penix<span class="gms">0g</span></span><span class="nfl">ATL</span><span class="ppg">0.0</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li></ul>
   </details>
 </article><article class="lot">
   <header class="lot-h"><span class="num">07</span>
-    <div class="idw"><h3>Mrs. Love</h3><p class="owner">DJMSZ</p><span class="badge up">+3 vs board</span></div>
+    <div class="idw"><h3>Mrs. Love</h3><p class="owner">DJMSZ</p></div>
     <div class="kpis">
       <div class="kpi"><b>145.1</b><em>proj PPG</em></div>
       <div class="kpi"><b>14.0<i>-14.0</i></b><em>record /28</em></div>
       <div class="kpi"><b>49%</b><em>playoffs</em></div>
-      <div class="kpi hero"><b>4.2%</b><em>title</em>
-        <span class="was">was 2.1%</span></div>
+      <div class="kpi hero"><b>4.2%</b><em>title</em></div>
     </div>
   </header>
   <div class="budget"><span class="seg bar-QB" style="flex:13" title="QB: $13 of $200"><em>QB</em></span><span class="seg bar-RB" style="flex:132" title="RB: $132 of $200"><em>RB</em><b>$132</b></span><span class="seg bar-WR" style="flex:52" title="WR: $52 of $200"><em>WR</em><b>$52</b></span><span class="seg bar-TE" style="flex:2" title="TE: $2 of $200"></span><span class="seg bar-DEF" style="flex:1" title="DEF: $1 of $200"></span></div>
-  <p class="note">The $132 running back spend is no longer a market error, which lifts this roster three places. The remaining problem is structural rather than financial: Brown, Hampton, Swift and Tuten are four startable backs and only three slots to put them in. Goff at $8 stays excellent, and Bryce Young in SUPER_FLEX now costs little.</p>
-  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Jared Goff</span><span class="nfl">DET</span><span class="ppg">22.6</span><span class="dlt up">+4.1</span><span class="paid">$8</span><span class="sur up">+6</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Chase Brown</span><span class="nfl">CIN</span><span class="ppg">17.7</span><span class="dlt up">+2.4</span><span class="paid">$48</span><span class="sur down">-6</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Omarion Hampton</span><span class="nfl">LAC</span><span class="ppg">16.0</span><span class="dlt up">+2.9</span><span class="paid">$41</span><span class="sur down">-10</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Amon-Ra St. Brown</span><span class="nfl">DET</span><span class="ppg">16.4</span><span class="dlt up">+2.9</span><span class="paid">$47</span><span class="sur ">+2</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">Courtland Sutton</span><span class="nfl">DEN</span><span class="ppg">8.9</span><span class="dlt ">+1.3</span><span class="paid">$2</span><span class="sur ">-1</span></li>
-<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Isaiah Likely</span><span class="nfl">NYG</span><span class="ppg">7.7</span><span class="dlt up">+2.3</span><span class="paid">$2</span><span class="sur ">-1</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX1</span><span class="pn">D&#x27;Andre Swift</span><span class="nfl">CHI</span><span class="ppg">13.7</span><span class="dlt up">+2.8</span><span class="paid">$23</span><span class="sur down">-6</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX2</span><span class="pn">Bhayshul Tuten</span><span class="nfl">JAX</span><span class="ppg">12.3</span><span class="dlt up">+2.3</span><span class="paid">$20</span><span class="sur down">-12</span></li>
-<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Bryce Young</span><span class="nfl">CAR</span><span class="ppg">19.0</span><span class="dlt up">+8.5</span><span class="paid">$3</span><span class="sur ">-2</span></li>
-<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">New England Patriots</span><span class="nfl">NE</span><span class="ppg">6.1</span><span class="dlt ">-0.8</span><span class="paid">$1</span><span class="sur ">+0</span></li></ul>
+  <p class="note">$132 of a $200 budget on four running backs. The market priced the position roughly fairly, so this is less a mistake than a redundancy: Brown, Hampton, Swift and Tuten are four startable backs competing for three slots, and the fourth is worth nothing on a given Sunday. Goff at $8 is excellent value, and Bryce Young in SUPER_FLEX costs little because it can afford to.</p>
+  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Jared Goff</span><span class="nfl">DET</span><span class="ppg">22.6</span><span class="paid">$8</span><span class="valc">$14</span><span class="sur up">+6</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Chase Brown</span><span class="nfl">CIN</span><span class="ppg">17.7</span><span class="paid">$48</span><span class="valc">$42</span><span class="sur down">-6</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Omarion Hampton</span><span class="nfl">LAC</span><span class="ppg">16.0</span><span class="paid">$41</span><span class="valc">$31</span><span class="sur down">-10</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Amon-Ra St. Brown</span><span class="nfl">DET</span><span class="ppg">16.4</span><span class="paid">$47</span><span class="valc">$49</span><span class="sur ">+2</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">Courtland Sutton</span><span class="nfl">DEN</span><span class="ppg">8.9</span><span class="paid">$2</span><span class="valc">$1</span><span class="sur ">-1</span></li>
+<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Isaiah Likely</span><span class="nfl">NYG</span><span class="ppg">7.7</span><span class="paid">$2</span><span class="valc">$1</span><span class="sur ">-1</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX1</span><span class="pn">D&#x27;Andre Swift</span><span class="nfl">CHI</span><span class="ppg">13.7</span><span class="paid">$23</span><span class="valc">$17</span><span class="sur down">-6</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX2</span><span class="pn">Bhayshul Tuten</span><span class="nfl">JAX</span><span class="ppg">12.3</span><span class="paid">$20</span><span class="valc">$8</span><span class="sur down">-12</span></li>
+<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Bryce Young</span><span class="nfl">CAR</span><span class="ppg">19.0</span><span class="paid">$3</span><span class="valc">$1</span><span class="sur ">-2</span></li>
+<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">New England Patriots</span><span class="nfl">NE</span><span class="ppg">6.1</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li></ul>
   <details><summary>Bench &amp; depth &#183; top-3 bench 43.8 ppg &#183; draft surplus -30</summary>
-    <ul class="plist bench"><li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Jacoby Brissett</span><span class="nfl">ARI</span><span class="ppg">18.3</span><span class="dlt up">+8.4</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Geno Smith</span><span class="nfl">NYJ</span><span class="ppg">17.0</span><span class="dlt up">+7.7</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Michael Pittman</span><span class="nfl">PIT</span><span class="ppg">8.5</span><span class="dlt up">+1.8</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Wan&#x27;Dale Robinson</span><span class="nfl">TEN</span><span class="ppg">8.0</span><span class="dlt up">+1.7</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">KC Concepcion</span><span class="nfl">CLE</span><span class="ppg">7.6</span><span class="dlt up">+2.5</span><span class="paid">$1</span><span class="sur ">+0</span></li></ul>
+    <ul class="plist bench"><li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Jacoby Brissett</span><span class="nfl">ARI</span><span class="ppg">18.3</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Geno Smith</span><span class="nfl">NYJ</span><span class="ppg">17.0</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Michael Pittman</span><span class="nfl">PIT</span><span class="ppg">8.5</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Wan&#x27;Dale Robinson</span><span class="nfl">TEN</span><span class="ppg">8.0</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">KC Concepcion</span><span class="nfl">CLE</span><span class="ppg">7.6</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li></ul>
   </details>
 </article><article class="lot">
   <header class="lot-h"><span class="num">08</span>
-    <div class="idw"><h3>Let Lindsay Clancy Walk</h3><p class="owner">jrgutier</p><span class="badge down">-1 vs board</span></div>
+    <div class="idw"><h3>Let Lindsay Clancy Walk</h3><p class="owner">jrgutier</p></div>
     <div class="kpis">
       <div class="kpi"><b>144.3</b><em>proj PPG</em></div>
       <div class="kpi"><b>13.6<i>-14.4</i></b><em>record /28</em></div>
       <div class="kpi"><b>44%</b><em>playoffs</em></div>
-      <div class="kpi hero"><b>3.7%</b><em>title</em>
-        <span class="was">was 4.0%</span></div>
+      <div class="kpi hero"><b>3.7%</b><em>title</em></div>
     </div>
   </header>
   <div class="budget"><span class="seg bar-QB" style="flex:33" title="QB: $33 of $200"><em>QB</em><b>$33</b></span><span class="seg bar-RB" style="flex:112" title="RB: $112 of $200"><em>RB</em><b>$112</b></span><span class="seg bar-WR" style="flex:52" title="WR: $52 of $200"><em>WR</em><b>$52</b></span><span class="seg bar-TE" style="flex:2" title="TE: $2 of $200"></span><span class="seg bar-DEF" style="flex:1" title="DEF: $1 of $200"></span></div>
-  <p class="note">The one team whose diagnosis barely moves: seventh on the board, eighth here, and the best draft surplus in the league at +$27 on these numbers. Gibbs is the top running back under both sources. Malik Willis at $3 is no longer the hole it looked like &mdash; at roughly replacement, that is exactly what a $3 SUPER_FLEX should be. What still caps it is the skill depth behind the top four.</p>
-  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Jayden Daniels</span><span class="nfl">WAS</span><span class="ppg">23.8</span><span class="dlt up">+1.7</span><span class="paid">$28</span><span class="sur down">-6</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Jahmyr Gibbs</span><span class="nfl">DET</span><span class="ppg">23.9</span><span class="dlt up">+3.9</span><span class="paid">$71</span><span class="sur up">+11</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Ashton Jeanty</span><span class="nfl">LV</span><span class="ppg">16.1</span><span class="dlt up">+2.2</span><span class="paid">$36</span><span class="sur ">-4</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Zay Flowers</span><span class="nfl">BAL</span><span class="ppg">12.6</span><span class="dlt up">+2.0</span><span class="paid">$18</span><span class="sur up">+6</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">DeVonta Smith</span><span class="nfl">PHI</span><span class="ppg">12.3</span><span class="dlt up">+2.4</span><span class="paid">$22</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Harold Fannin</span><span class="nfl">CLE</span><span class="ppg">8.6</span><span class="dlt ">+0.3</span><span class="paid">$2</span><span class="sur ">+5</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX1</span><span class="pn">Luther Burden</span><span class="nfl">CHI</span><span class="ppg">11.2</span><span class="dlt up">+3.0</span><span class="paid">$11</span><span class="sur ">+4</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX2</span><span class="pn">Josh Downs</span><span class="nfl">IND</span><span class="ppg">10.0</span><span class="dlt up">+4.0</span><span class="paid">$1</span><span class="sur up">+6</span></li>
-<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Malik Willis</span><span class="nfl">MIA</span><span class="ppg">20.6</span><span class="dlt up">+9.5</span><span class="paid">$3</span><span class="sur ">-2</span></li>
-<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Houston Texans</span><span class="nfl">HOU</span><span class="ppg">7.5</span><span class="dlt ">+0.3</span><span class="paid">$1</span><span class="sur up">+9</span></li></ul>
+  <p class="note">The best draft surplus in the league at +$27, and Gibbs is the highest-projected running back in the draft. Malik Willis at $3 in SUPER_FLEX is exactly the right shape for this format &mdash; roughly replacement level, for nothing. What caps the roster is skill depth: behind the top four, the bench is five $1 running backs and little else.</p>
+  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Jayden Daniels</span><span class="nfl">WAS</span><span class="ppg">23.8</span><span class="paid">$28</span><span class="valc">$22</span><span class="sur down">-6</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Jahmyr Gibbs</span><span class="nfl">DET</span><span class="ppg">23.9</span><span class="paid">$71</span><span class="valc">$82</span><span class="sur up">+11</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Ashton Jeanty</span><span class="nfl">LV</span><span class="ppg">16.1</span><span class="paid">$36</span><span class="valc">$32</span><span class="sur ">-4</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Zay Flowers</span><span class="nfl">BAL</span><span class="ppg">12.6</span><span class="paid">$18</span><span class="valc">$24</span><span class="sur up">+6</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">DeVonta Smith</span><span class="nfl">PHI</span><span class="ppg">12.3</span><span class="paid">$22</span><span class="valc">$22</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Harold Fannin</span><span class="nfl">CLE</span><span class="ppg">8.6</span><span class="paid">$2</span><span class="valc">$7</span><span class="sur ">+5</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX1</span><span class="pn">Luther Burden</span><span class="nfl">CHI</span><span class="ppg">11.2</span><span class="paid">$11</span><span class="valc">$15</span><span class="sur ">+4</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX2</span><span class="pn">Josh Downs</span><span class="nfl">IND</span><span class="ppg">10.0</span><span class="paid">$1</span><span class="valc">$7</span><span class="sur up">+6</span></li>
+<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Malik Willis</span><span class="nfl">MIA</span><span class="ppg">20.6</span><span class="paid">$3</span><span class="valc">$1</span><span class="sur ">-2</span></li>
+<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Houston Texans</span><span class="nfl">HOU</span><span class="ppg">7.5</span><span class="paid">$1</span><span class="valc">$10</span><span class="sur up">+9</span></li></ul>
   <details><summary>Bench &amp; depth &#183; top-3 bench 30.6 ppg &#183; draft surplus +27</summary>
-    <ul class="plist bench"><li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Cam Ward</span><span class="nfl">TEN</span><span class="ppg">18.7</span><span class="dlt up">+9.4</span><span class="paid">$2</span><span class="sur ">-1</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Keaton Mitchell</span><span class="nfl">LAC</span><span class="ppg">7.4</span><span class="dlt up">+3.5</span><span class="paid">$2</span><span class="sur ">-1</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Ray Davis</span><span class="nfl">BUF</span><span class="ppg">4.5</span><span class="dlt ">+1.1</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Jonah Coleman</span><span class="nfl">DEN</span><span class="ppg">3.7</span><span class="dlt ">-0.7</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Emmett Johnson</span><span class="nfl">KC</span><span class="ppg">3.6</span><span class="dlt down">-1.7</span><span class="paid">$1</span><span class="sur ">+0</span></li></ul>
+    <ul class="plist bench"><li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Cam Ward</span><span class="nfl">TEN</span><span class="ppg">18.7</span><span class="paid">$2</span><span class="valc">$1</span><span class="sur ">-1</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Keaton Mitchell</span><span class="nfl">LAC</span><span class="ppg">7.4</span><span class="paid">$2</span><span class="valc">$1</span><span class="sur ">-1</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Ray Davis</span><span class="nfl">BUF</span><span class="ppg">4.5</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Jonah Coleman</span><span class="nfl">DEN</span><span class="ppg">3.7</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Emmett Johnson</span><span class="nfl">KC</span><span class="ppg">3.6</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li></ul>
   </details>
 </article><article class="lot">
   <header class="lot-h"><span class="num">09</span>
-    <div class="idw"><h3>Tee-Tee Higgins</h3><p class="owner">atoenail</p><span class="badge up">+3 vs board</span></div>
+    <div class="idw"><h3>Tee-Tee Higgins</h3><p class="owner">atoenail</p></div>
     <div class="kpis">
       <div class="kpi"><b>141.9</b><em>proj PPG</em></div>
       <div class="kpi"><b>12.7<i>-15.3</i></b><em>record /28</em></div>
       <div class="kpi"><b>34%</b><em>playoffs</em></div>
-      <div class="kpi hero"><b>2.6%</b><em>title</em>
-        <span class="was">was 1.3%</span></div>
+      <div class="kpi hero"><b>2.6%</b><em>title</em></div>
     </div>
   </header>
   <div class="budget"><span class="seg bar-QB" style="flex:45" title="QB: $45 of $200"><em>QB</em><b>$45</b></span><span class="seg bar-RB" style="flex:73" title="RB: $73 of $200"><em>RB</em><b>$73</b></span><span class="seg bar-WR" style="flex:71" title="WR: $71 of $200"><em>WR</em><b>$71</b></span><span class="seg bar-TE" style="flex:10" title="TE: $10 of $200"><em>TE</em></span><span class="seg bar-DEF" style="flex:1" title="DEF: $1 of $200"></span></div>
-  <p class="note">CMC at $51 is the most valuable single buy in the entire draft on these numbers, +$28 of surplus, and Loveland at $10 is +$16. It still finishes ninth because roughly a fifth of the budget is dead: four quarterback seats in a format where the 24th quarterback is nearly free, plus Jadarian Price at $17 for a $1 player.</p>
-  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Caleb Williams</span><span class="nfl">CHI</span><span class="ppg">23.8</span><span class="dlt up">+4.3</span><span class="paid">$34</span><span class="sur down">-12</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Christian McCaffrey</span><span class="nfl">SF</span><span class="ppg">23.4</span><span class="dlt up">+5.6</span><span class="paid">$51</span><span class="sur up">+28</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Jadarian Price</span><span class="nfl">SEA</span><span class="ppg">11.2</span><span class="dlt up">+2.9</span><span class="paid">$17</span><span class="sur down">-16</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Justin Jefferson</span><span class="nfl">MIN</span><span class="ppg">13.9</span><span class="dlt ">+1.3</span><span class="paid">$39</span><span class="sur down">-7</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">Chris Olave</span><span class="nfl">NO</span><span class="ppg">13.0</span><span class="dlt up">+1.7</span><span class="paid">$28</span><span class="sur ">-2</span></li>
-<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Colston Loveland</span><span class="nfl">CHI</span><span class="ppg">11.6</span><span class="dlt up">+2.1</span><span class="paid">$10</span><span class="sur up">+16</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX1</span><span class="pn">Jalen Coker</span><span class="nfl">CAR</span><span class="ppg">9.7</span><span class="dlt up">+4.7</span><span class="paid">$1</span><span class="sur ">+4</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX2</span><span class="pn">Quentin Johnston</span><span class="nfl">LAC</span><span class="ppg">9.3</span><span class="dlt up">+3.5</span><span class="paid">$1</span><span class="sur ">+2</span></li>
-<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Tyler Shough</span><span class="nfl">NO</span><span class="ppg">21.2</span><span class="dlt up">+6.6</span><span class="paid">$9</span><span class="sur ">-4</span></li>
-<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Philadelphia Eagles</span><span class="nfl">PHI</span><span class="ppg">7.4</span><span class="dlt ">-0.4</span><span class="paid">$1</span><span class="sur up">+9</span></li></ul>
+  <p class="note">CMC at $51 is the most valuable single buy in the entire draft, +$28 of surplus, and Loveland at $10 is +$16. It still finishes ninth because roughly a fifth of the budget is dead weight &mdash; four quarterback seats in a format where the 24th quarterback is nearly free, plus $17 on Jadarian Price for a player worth $1.</p>
+  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Caleb Williams</span><span class="nfl">CHI</span><span class="ppg">23.8</span><span class="paid">$34</span><span class="valc">$22</span><span class="sur down">-12</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Christian McCaffrey</span><span class="nfl">SF</span><span class="ppg">23.4</span><span class="paid">$51</span><span class="valc">$79</span><span class="sur up">+28</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Jadarian Price</span><span class="nfl">SEA</span><span class="ppg">11.2</span><span class="paid">$17</span><span class="valc">$1</span><span class="sur down">-16</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Justin Jefferson</span><span class="nfl">MIN</span><span class="ppg">13.9</span><span class="paid">$39</span><span class="valc">$32</span><span class="sur down">-7</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">Chris Olave</span><span class="nfl">NO</span><span class="ppg">13.0</span><span class="paid">$28</span><span class="valc">$26</span><span class="sur ">-2</span></li>
+<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Colston Loveland</span><span class="nfl">CHI</span><span class="ppg">11.6</span><span class="paid">$10</span><span class="valc">$26</span><span class="sur up">+16</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX1</span><span class="pn">Jalen Coker</span><span class="nfl">CAR</span><span class="ppg">9.7</span><span class="paid">$1</span><span class="valc">$5</span><span class="sur ">+4</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX2</span><span class="pn">Quentin Johnston</span><span class="nfl">LAC</span><span class="ppg">9.3</span><span class="paid">$1</span><span class="valc">$3</span><span class="sur ">+2</span></li>
+<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Tyler Shough</span><span class="nfl">NO</span><span class="ppg">21.2</span><span class="paid">$9</span><span class="valc">$5</span><span class="sur ">-4</span></li>
+<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Philadelphia Eagles</span><span class="nfl">PHI</span><span class="ppg">7.4</span><span class="paid">$1</span><span class="valc">$10</span><span class="sur up">+9</span></li></ul>
   <details><summary>Bench &amp; depth &#183; top-3 bench 41.7 ppg &#183; draft surplus +14</summary>
-    <ul class="plist bench"><li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Fernando Mendoza</span><span class="nfl">LV</span><span class="ppg">16.9</span><span class="dlt up">+5.3</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Shedeur Sanders</span><span class="nfl">CLE</span><span class="ppg">16.7</span><span class="dlt up">+7.9</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Woody Marks</span><span class="nfl">HOU</span><span class="ppg">8.1</span><span class="dlt up">+2.5</span><span class="paid">$2</span><span class="sur ">-1</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">De&#x27;Zhaun Stribling</span><span class="nfl">SF</span><span class="ppg">6.0</span><span class="dlt ">+1.1</span><span class="paid">$2</span><span class="sur ">-1</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Kaelon Black</span><span class="nfl">SF</span><span class="ppg">2.4</span><span class="dlt ">-1.2</span><span class="paid">$3</span><span class="sur ">-2</span></li></ul>
+    <ul class="plist bench"><li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Fernando Mendoza<span class="gms">11g</span></span><span class="nfl">LV</span><span class="ppg">16.9</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Shedeur Sanders<span class="gms">3g</span></span><span class="nfl">CLE</span><span class="ppg">16.7</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Woody Marks</span><span class="nfl">HOU</span><span class="ppg">8.1</span><span class="paid">$2</span><span class="valc">$1</span><span class="sur ">-1</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">De&#x27;Zhaun Stribling</span><span class="nfl">SF</span><span class="ppg">6.0</span><span class="paid">$2</span><span class="valc">$1</span><span class="sur ">-1</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Kaelon Black</span><span class="nfl">SF</span><span class="ppg">2.4</span><span class="paid">$3</span><span class="valc">$1</span><span class="sur ">-2</span></li></ul>
   </details>
 </article><article class="lot">
   <header class="lot-h"><span class="num">10</span>
-    <div class="idw"><h3>Pac-0 Conference</h3><p class="owner">therussval</p><span class="badge up">+1 vs board</span></div>
+    <div class="idw"><h3>Pac-0 Conference</h3><p class="owner">therussval</p></div>
     <div class="kpis">
       <div class="kpi"><b>137.5</b><em>proj PPG</em></div>
       <div class="kpi"><b>10.7<i>-17.3</i></b><em>record /28</em></div>
       <div class="kpi"><b>14%</b><em>playoffs</em></div>
-      <div class="kpi hero"><b>0.6%</b><em>title</em>
-        <span class="was">was 1.5%</span></div>
+      <div class="kpi hero"><b>0.6%</b><em>title</em></div>
     </div>
   </header>
   <div class="budget"><span class="seg bar-QB" style="flex:35" title="QB: $35 of $200"><em>QB</em><b>$35</b></span><span class="seg bar-RB" style="flex:57" title="RB: $57 of $200"><em>RB</em><b>$57</b></span><span class="seg bar-WR" style="flex:101" title="WR: $101 of $200"><em>WR</em><b>$101</b></span><span class="seg bar-TE" style="flex:6" title="TE: $6 of $200"></span><span class="seg bar-DEF" style="flex:1" title="DEF: $1 of $200"></span></div>
-  <p class="note">Chase, Lamb and Dak remain a real core. What sinks it is that this model uses the actual 2026 bye schedule instead of random byes, and the league's thinnest bench cannot cover them &mdash; Dallas and Green Bay both off in the same stretch leaves nothing to start. The margin between this roster and the playoff line is one unlucky week.</p>
-  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Dak Prescott</span><span class="nfl">DAL</span><span class="ppg">23.5</span><span class="dlt ">+0.4</span><span class="paid">$27</span><span class="sur down">-7</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Kyren Williams</span><span class="nfl">LAR</span><span class="ppg">16.4</span><span class="dlt up">+4.0</span><span class="paid">$31</span><span class="sur ">+3</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Bucky Irving</span><span class="nfl">TB</span><span class="ppg">13.5</span><span class="dlt up">+2.9</span><span class="paid">$24</span><span class="sur down">-9</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Ja&#x27;Marr Chase</span><span class="nfl">CIN</span><span class="ppg">16.4</span><span class="dlt up">+1.7</span><span class="paid">$52</span><span class="sur ">-4</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">CeeDee Lamb</span><span class="nfl">DAL</span><span class="ppg">14.4</span><span class="dlt ">+1.4</span><span class="paid">$41</span><span class="sur down">-6</span></li>
-<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Tucker Kraft</span><span class="nfl">GB</span><span class="ppg">10.2</span><span class="dlt up">+3.1</span><span class="paid">$5</span><span class="sur up">+12</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX1</span><span class="pn">Chris Rodriguez</span><span class="nfl">JAX</span><span class="ppg">9.5</span><span class="dlt up">+5.3</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX2</span><span class="pn">Jakobi Meyers</span><span class="nfl">JAX</span><span class="ppg">8.4</span><span class="dlt up">+2.2</span><span class="paid">$2</span><span class="sur ">-1</span></li>
-<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Jordan Love</span><span class="nfl">GB</span><span class="ppg">21.8</span><span class="dlt up">+7.8</span><span class="paid">$8</span><span class="sur ">+1</span></li>
-<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Los Angeles Chargers</span><span class="nfl">LAC</span><span class="ppg">6.1</span><span class="dlt ">-0.7</span><span class="paid">$1</span><span class="sur ">+0</span></li></ul>
+  <p class="note">Chase, Lamb and Dak is a real core, and $35 for Dak plus Love is efficient quarterback spending. What sinks it is the thinnest bench in the league at 14.0 ppg from the top three reserves, which cannot cover the weeks Dallas and Green Bay are both on bye. The margin between this roster and the playoff line is one badly-timed injury.</p>
+  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Dak Prescott</span><span class="nfl">DAL</span><span class="ppg">23.5</span><span class="paid">$27</span><span class="valc">$20</span><span class="sur down">-7</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Kyren Williams</span><span class="nfl">LAR</span><span class="ppg">16.4</span><span class="paid">$31</span><span class="valc">$34</span><span class="sur ">+3</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Bucky Irving</span><span class="nfl">TB</span><span class="ppg">13.5</span><span class="paid">$24</span><span class="valc">$15</span><span class="sur down">-9</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Ja&#x27;Marr Chase</span><span class="nfl">CIN</span><span class="ppg">16.4</span><span class="paid">$52</span><span class="valc">$48</span><span class="sur ">-4</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">CeeDee Lamb</span><span class="nfl">DAL</span><span class="ppg">14.4</span><span class="paid">$41</span><span class="valc">$35</span><span class="sur down">-6</span></li>
+<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Tucker Kraft</span><span class="nfl">GB</span><span class="ppg">10.2</span><span class="paid">$5</span><span class="valc">$17</span><span class="sur up">+12</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX1</span><span class="pn">Chris Rodriguez</span><span class="nfl">JAX</span><span class="ppg">9.5</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX2</span><span class="pn">Jakobi Meyers</span><span class="nfl">JAX</span><span class="ppg">8.4</span><span class="paid">$2</span><span class="valc">$1</span><span class="sur ">-1</span></li>
+<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Jordan Love</span><span class="nfl">GB</span><span class="ppg">21.8</span><span class="paid">$8</span><span class="valc">$9</span><span class="sur ">+1</span></li>
+<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Los Angeles Chargers</span><span class="nfl">LAC</span><span class="ppg">6.1</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li></ul>
   <details><summary>Bench &amp; depth &#183; top-3 bench 20.9 ppg &#183; draft surplus -14</summary>
-    <ul class="plist bench"><li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Rashid Shaheed</span><span class="nfl">SEA</span><span class="ppg">7.8</span><span class="dlt up">+3.0</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-TE"></span><span class="slot bn">BN</span><span class="pn">Hunter Henry</span><span class="nfl">NE</span><span class="ppg">7.4</span><span class="dlt up">+2.8</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Makai Lemon</span><span class="nfl">PHI</span><span class="ppg">5.7</span><span class="dlt ">+1.1</span><span class="paid">$4</span><span class="sur ">-3</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Denzel Boston</span><span class="nfl">CLE</span><span class="ppg">5.3</span><span class="dlt ">+0.9</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Zach Charbonnet</span><span class="nfl">SEA</span><span class="ppg">3.8</span><span class="dlt down">-1.9</span><span class="paid">$1</span><span class="sur ">+0</span></li></ul>
+    <ul class="plist bench"><li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Rashid Shaheed</span><span class="nfl">SEA</span><span class="ppg">7.8</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-TE"></span><span class="slot bn">BN</span><span class="pn">Hunter Henry</span><span class="nfl">NE</span><span class="ppg">7.4</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Makai Lemon</span><span class="nfl">PHI</span><span class="ppg">5.7</span><span class="paid">$4</span><span class="valc">$1</span><span class="sur ">-3</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Denzel Boston</span><span class="nfl">CLE</span><span class="ppg">5.3</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Zach Charbonnet<span class="gms">12g</span></span><span class="nfl">SEA</span><span class="ppg">3.8</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li></ul>
   </details>
 </article><article class="lot">
   <header class="lot-h"><span class="num">11</span>
-    <div class="idw"><h3>Crimson Bears</h3><p class="owner">tres907</p><span class="badge down">-6 vs board</span></div>
+    <div class="idw"><h3>Crimson Bears</h3><p class="owner">tres907</p></div>
     <div class="kpis">
       <div class="kpi"><b>135.6</b><em>proj PPG</em></div>
       <div class="kpi"><b>9.6<i>-18.4</i></b><em>record /28</em></div>
       <div class="kpi"><b>9%</b><em>playoffs</em></div>
-      <div class="kpi hero"><b>0.3%</b><em>title</em>
-        <span class="was">was 7.0%</span></div>
+      <div class="kpi hero"><b>0.3%</b><em>title</em></div>
     </div>
   </header>
   <div class="budget"><span class="seg bar-QB" style="flex:105" title="QB: $105 of $200"><em>QB</em><b>$105</b></span><span class="seg bar-RB" style="flex:68" title="RB: $68 of $200"><em>RB</em><b>$68</b></span><span class="seg bar-WR" style="flex:24" title="WR: $24 of $200"><em>WR</em><b>$24</b></span><span class="seg bar-TE" style="flex:2" title="TE: $2 of $200"></span><span class="seg bar-DEF" style="flex:1" title="DEF: $1 of $200"></span></div>
-  <p class="note">Down six places. $104 on Allen and Lamar buys roughly 9 ppg over two replacement quarterbacks on these numbers, not the 25 the board implied, and both now grade as the two largest overpays in the draft. With $24 across five receivers and $2 at tight end, four starting slots sit at or below replacement, and there is no longer a quarterback edge paying for them.</p>
-  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Josh Allen</span><span class="nfl">BUF</span><span class="ppg">25.4</span><span class="dlt down">-3.7</span><span class="paid">$56</span><span class="sur down">-24</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Bijan Robinson</span><span class="nfl">ATL</span><span class="ppg">23.4</span><span class="dlt up">+4.7</span><span class="paid">$65</span><span class="sur up">+14</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Aaron Jones</span><span class="nfl">MIN</span><span class="ppg">9.2</span><span class="dlt up">+2.2</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Alec Pierce</span><span class="nfl">IND</span><span class="ppg">10.5</span><span class="dlt up">+3.5</span><span class="paid">$2</span><span class="sur up">+8</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">DK Metcalf</span><span class="nfl">PIT</span><span class="ppg">10.0</span><span class="dlt up">+2.8</span><span class="paid">$2</span><span class="sur ">+5</span></li>
-<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Mark Andrews</span><span class="nfl">BAL</span><span class="ppg">8.6</span><span class="dlt up">+2.7</span><span class="paid">$1</span><span class="sur up">+6</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX1</span><span class="pn">DJ Moore</span><span class="nfl">BUF</span><span class="ppg">9.7</span><span class="dlt ">+1.2</span><span class="paid">$18</span><span class="sur down">-13</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX2</span><span class="pn">Deebo Samuel</span><span class="nfl">SF</span><span class="ppg">9.0</span><span class="dlt up">+3.8</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Lamar Jackson</span><span class="nfl">BAL</span><span class="ppg">25.0</span><span class="dlt ">+0.9</span><span class="paid">$48</span><span class="sur down">-19</span></li>
-<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Detroit Lions</span><span class="nfl">DET</span><span class="ppg">6.1</span><span class="dlt ">-1.0</span><span class="paid">$1</span><span class="sur ">+0</span></li></ul>
+  <p class="note">$104 on Allen and Lamar is the largest quarterback spend in the league, and the two grade as the biggest overpays in the draft: together they buy about 9 ppg over two replacement starters. The bill comes due everywhere else &mdash; $24 across five wide receivers and $2 at tight end leaves four starting slots at or below replacement level.</p>
+  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Josh Allen</span><span class="nfl">BUF</span><span class="ppg">25.4</span><span class="paid">$56</span><span class="valc">$32</span><span class="sur down">-24</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Bijan Robinson</span><span class="nfl">ATL</span><span class="ppg">23.4</span><span class="paid">$65</span><span class="valc">$79</span><span class="sur up">+14</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">Aaron Jones</span><span class="nfl">MIN</span><span class="ppg">9.2</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Alec Pierce</span><span class="nfl">IND</span><span class="ppg">10.5</span><span class="paid">$2</span><span class="valc">$10</span><span class="sur up">+8</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">DK Metcalf</span><span class="nfl">PIT</span><span class="ppg">10.0</span><span class="paid">$2</span><span class="valc">$7</span><span class="sur ">+5</span></li>
+<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Mark Andrews</span><span class="nfl">BAL</span><span class="ppg">8.6</span><span class="paid">$1</span><span class="valc">$7</span><span class="sur up">+6</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX1</span><span class="pn">DJ Moore</span><span class="nfl">BUF</span><span class="ppg">9.7</span><span class="paid">$18</span><span class="valc">$5</span><span class="sur down">-13</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">FLEX2</span><span class="pn">Deebo Samuel</span><span class="nfl">SF</span><span class="ppg">9.0</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Lamar Jackson</span><span class="nfl">BAL</span><span class="ppg">25.0</span><span class="paid">$48</span><span class="valc">$29</span><span class="sur down">-19</span></li>
+<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Detroit Lions</span><span class="nfl">DET</span><span class="ppg">6.1</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li></ul>
   <details><summary>Bench &amp; depth &#183; top-3 bench 28.6 ppg &#183; draft surplus -22</summary>
-    <ul class="plist bench"><li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Deshaun Watson</span><span class="nfl">CLE</span><span class="ppg">15.2</span><span class="dlt up">+7.0</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-TE"></span><span class="slot bn">BN</span><span class="pn">Juwan Johnson</span><span class="nfl">NO</span><span class="ppg">7.8</span><span class="dlt up">+2.8</span><span class="paid">$1</span><span class="sur ">+1</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Alvin Kamara</span><span class="nfl">NO</span><span class="ppg">5.6</span><span class="dlt ">+0.9</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Brian Robinson</span><span class="nfl">ATL</span><span class="ppg">5.5</span><span class="dlt up">+1.9</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Keon Coleman</span><span class="nfl">BUF</span><span class="ppg">3.5</span><span class="dlt ">+0.7</span><span class="paid">$1</span><span class="sur ">+0</span></li></ul>
+    <ul class="plist bench"><li class="p-row"><span class="dot p-QB"></span><span class="slot bn">BN</span><span class="pn">Deshaun Watson</span><span class="nfl">CLE</span><span class="ppg">15.2</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-TE"></span><span class="slot bn">BN</span><span class="pn">Juwan Johnson</span><span class="nfl">NO</span><span class="ppg">7.8</span><span class="paid">$1</span><span class="valc">$2</span><span class="sur ">+1</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Alvin Kamara</span><span class="nfl">NO</span><span class="ppg">5.6</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Brian Robinson</span><span class="nfl">ATL</span><span class="ppg">5.5</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Keon Coleman</span><span class="nfl">BUF</span><span class="ppg">3.5</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li></ul>
   </details>
 </article><article class="lot">
   <header class="lot-h"><span class="num">12</span>
-    <div class="idw"><h3>Joshin&#8217; You Not</h3><p class="owner">xpaulito228x</p><span class="badge down">-10 vs board</span></div>
+    <div class="idw"><h3>Joshin&#8217; You Not</h3><p class="owner">xpaulito228x</p></div>
     <div class="kpis">
       <div class="kpi"><b>132.2</b><em>proj PPG</em></div>
       <div class="kpi"><b>7.9<i>-20.1</i></b><em>record /28</em></div>
       <div class="kpi"><b>3%</b><em>playoffs</em></div>
-      <div class="kpi hero"><b>0.0%</b><em>title</em>
-        <span class="was">was 24.1%</span></div>
+      <div class="kpi hero"><b>0.0%</b><em>title</em></div>
     </div>
   </header>
   <div class="budget"><span class="seg bar-QB" style="flex:84" title="QB: $84 of $200"><em>QB</em><b>$84</b></span><span class="seg bar-RB" style="flex:41" title="RB: $41 of $200"><em>RB</em><b>$41</b></span><span class="seg bar-WR" style="flex:38" title="WR: $38 of $200"><em>WR</em><b>$38</b></span><span class="seg bar-TE" style="flex:36" title="TE: $36 of $200"><em>TE</em><b>$36</b></span><span class="seg bar-DEF" style="flex:1" title="DEF: $1 of $200"></span></div>
-  <p class="note">From first to last, the largest fall in the league and the clearest illustration of the whole disagreement. $84 on Maye and Burrow buys about 6 ppg over replacement here against roughly 25 on the board. Take that away and what is left is the weakest set of eight non-quarterback starters in the league. It is worth stressing that this roster stays twelfth even when quarterback spread is stretched 2.5x, back to board-like levels: the skill corps, not the quarterback price, is what buries it.</p>
-  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Joe Burrow</span><span class="nfl">CIN</span><span class="ppg">24.5</span><span class="dlt ">-1.1</span><span class="paid">$43</span><span class="sur down">-17</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Cam Skattebo</span><span class="nfl">NYG</span><span class="ppg">14.4</span><span class="dlt up">+3.2</span><span class="paid">$27</span><span class="sur down">-6</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">RJ Harvey</span><span class="nfl">DEN</span><span class="ppg">10.6</span><span class="dlt up">+3.4</span><span class="paid">$4</span><span class="sur ">-3</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Ladd McConkey</span><span class="nfl">LAC</span><span class="ppg">10.7</span><span class="dlt up">+1.5</span><span class="paid">$18</span><span class="sur down">-6</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">Emeka Egbuka</span><span class="nfl">TB</span><span class="ppg">9.8</span><span class="dlt ">+0.3</span><span class="paid">$16</span><span class="sur down">-10</span></li>
-<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Brock Bowers</span><span class="nfl">LV</span><span class="ppg">12.9</span><span class="dlt up">+2.5</span><span class="paid">$36</span><span class="sur ">-1</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX1</span><span class="pn">J.K. Dobbins</span><span class="nfl">DEN</span><span class="ppg">9.5</span><span class="dlt up">+1.8</span><span class="paid">$3</span><span class="sur ">-2</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX2</span><span class="pn">Kyle Monangai</span><span class="nfl">CHI</span><span class="ppg">9.1</span><span class="dlt up">+2.3</span><span class="paid">$2</span><span class="sur ">-1</span></li>
-<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Drake Maye</span><span class="nfl">NE</span><span class="ppg">23.0</span><span class="dlt down">-4.4</span><span class="paid">$41</span><span class="sur down">-24</span></li>
-<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Seattle Seahawks</span><span class="nfl">SEA</span><span class="ppg">7.6</span><span class="dlt ">+0.3</span><span class="paid">$1</span><span class="sur up">+10</span></li></ul>
+  <p class="note">The clearest cautionary tale in the draft. $84 on Maye and Burrow buys roughly 6 ppg over replacement in a format where 24 quarterbacks start every week, and the $116 left over produced the weakest set of eight non-quarterback starters in the league. Bowers at $36 is a genuine asset. There is very little else.</p>
+  <ul class="plist"><li class="p-row"><span class="dot p-QB"></span><span class="slot">QB</span><span class="pn">Joe Burrow</span><span class="nfl">CIN</span><span class="ppg">24.5</span><span class="paid">$43</span><span class="valc">$26</span><span class="sur down">-17</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB1</span><span class="pn">Cam Skattebo</span><span class="nfl">NYG</span><span class="ppg">14.4</span><span class="paid">$27</span><span class="valc">$21</span><span class="sur down">-6</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">RB2</span><span class="pn">RJ Harvey</span><span class="nfl">DEN</span><span class="ppg">10.6</span><span class="paid">$4</span><span class="valc">$1</span><span class="sur ">-3</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR1</span><span class="pn">Ladd McConkey</span><span class="nfl">LAC</span><span class="ppg">10.7</span><span class="paid">$18</span><span class="valc">$12</span><span class="sur down">-6</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot">WR2</span><span class="pn">Emeka Egbuka</span><span class="nfl">TB</span><span class="ppg">9.8</span><span class="paid">$16</span><span class="valc">$6</span><span class="sur down">-10</span></li>
+<li class="p-row"><span class="dot p-TE"></span><span class="slot">TE</span><span class="pn">Brock Bowers</span><span class="nfl">LV</span><span class="ppg">12.9</span><span class="paid">$36</span><span class="valc">$35</span><span class="sur ">-1</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX1</span><span class="pn">J.K. Dobbins</span><span class="nfl">DEN</span><span class="ppg">9.5</span><span class="paid">$3</span><span class="valc">$1</span><span class="sur ">-2</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot">FLEX2</span><span class="pn">Kyle Monangai</span><span class="nfl">CHI</span><span class="ppg">9.1</span><span class="paid">$2</span><span class="valc">$1</span><span class="sur ">-1</span></li>
+<li class="p-row"><span class="dot p-QB"></span><span class="slot">SFLEX</span><span class="pn">Drake Maye</span><span class="nfl">NE</span><span class="ppg">23.0</span><span class="paid">$41</span><span class="valc">$17</span><span class="sur down">-24</span></li>
+<li class="p-row"><span class="dot p-DEF"></span><span class="slot">DEF</span><span class="pn">Seattle Seahawks</span><span class="nfl">SEA</span><span class="ppg">7.6</span><span class="paid">$1</span><span class="valc">$11</span><span class="sur up">+10</span></li></ul>
   <details><summary>Bench &amp; depth &#183; top-3 bench 23.4 ppg &#183; draft surplus -64</summary>
-    <ul class="plist bench"><li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Brian Thomas</span><span class="nfl">JAX</span><span class="ppg">9.1</span><span class="dlt up">+2.2</span><span class="paid">$2</span><span class="sur ">-1</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Xavier Worthy</span><span class="nfl">KC</span><span class="ppg">9.0</span><span class="dlt up">+3.5</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">MarShawn Lloyd</span><span class="nfl">GB</span><span class="ppg">5.3</span><span class="dlt ">-0.9</span><span class="paid">$4</span><span class="sur ">-3</span></li>
-<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Mike Washington</span><span class="nfl">LV</span><span class="ppg">3.2</span><span class="dlt down">-2.0</span><span class="paid">$1</span><span class="sur ">+0</span></li>
-<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Ja&#x27;Kobi Lane</span><span class="nfl">BAL</span><span class="ppg">2.8</span><span class="dlt ">-0.7</span><span class="paid">$1</span><span class="sur ">+0</span></li></ul>
+    <ul class="plist bench"><li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Brian Thomas</span><span class="nfl">JAX</span><span class="ppg">9.1</span><span class="paid">$2</span><span class="valc">$1</span><span class="sur ">-1</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Xavier Worthy</span><span class="nfl">KC</span><span class="ppg">9.0</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">MarShawn Lloyd</span><span class="nfl">GB</span><span class="ppg">5.3</span><span class="paid">$4</span><span class="valc">$1</span><span class="sur ">-3</span></li>
+<li class="p-row"><span class="dot p-RB"></span><span class="slot bn">BN</span><span class="pn">Mike Washington</span><span class="nfl">LV</span><span class="ppg">3.2</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li>
+<li class="p-row"><span class="dot p-WR"></span><span class="slot bn">BN</span><span class="pn">Ja&#x27;Kobi Lane</span><span class="nfl">BAL</span><span class="ppg">2.8</span><span class="paid">$1</span><span class="valc">$1</span><span class="sur ">+0</span></li></ul>
   </details>
 </article>
 </section>
 
 <section>
-  <div class="sh"><h2>The ledger, reversed</h2><p>Best and worst buys, with the board's verdict alongside</p></div>
+  <div class="sh"><h2>The ledger</h2><p>Largest gaps between price paid and projected value</p></div>
   <div class="deals">
-    <div><h3>Best buys</h3><ul><li><span class="dot p-RB"></span><span class="pn">Christian McCaffrey</span><span class="tiny">Tee-Tee Higgins</span><span class="paid">$51</span><span class="arw">&rarr;</span><span class="paid val">$79</span><span class="sur up">+28</span><span class="oldsur">board -5</span></li>
-<li><span class="dot p-RB"></span><span class="pn">David Montgomery</span><span class="tiny">SexWithCresIsBest</span><span class="paid">$15</span><span class="arw">&rarr;</span><span class="paid val">$33</span><span class="sur up">+18</span><span class="oldsur">board -6</span></li>
-<li><span class="dot p-TE"></span><span class="pn">Colston Loveland</span><span class="tiny">Tee-Tee Higgins</span><span class="paid">$10</span><span class="arw">&rarr;</span><span class="paid val">$26</span><span class="sur up">+16</span><span class="oldsur">board +10</span></li>
-<li><span class="dot p-RB"></span><span class="pn">Josh Jacobs</span><span class="tiny">Mood Killer</span><span class="paid">$8</span><span class="arw">&rarr;</span><span class="paid val">$23</span><span class="sur up">+15</span><span class="oldsur">board -5</span></li>
-<li><span class="dot p-RB"></span><span class="pn">Bijan Robinson</span><span class="tiny">Crimson Bears</span><span class="paid">$65</span><span class="arw">&rarr;</span><span class="paid val">$79</span><span class="sur up">+14</span><span class="oldsur">board -15</span></li>
-<li><span class="dot p-RB"></span><span class="pn">Jaylen Warren</span><span class="tiny">Caleb Williams Fan Club</span><span class="paid">$5</span><span class="arw">&rarr;</span><span class="paid val">$19</span><span class="sur up">+14</span><span class="oldsur">board +1</span></li>
-<li><span class="dot p-WR"></span><span class="pn">Jayden Reed</span><span class="tiny">Fist My Bump</span><span class="paid">$1</span><span class="arw">&rarr;</span><span class="paid val">$15</span><span class="sur up">+14</span><span class="oldsur">board +0</span></li>
-<li><span class="dot p-RB"></span><span class="pn">De&#x27;Von Achane</span><span class="tiny">Mood Killer</span><span class="paid">$34</span><span class="arw">&rarr;</span><span class="paid val">$47</span><span class="sur up">+13</span><span class="oldsur">board +5</span></li>
-<li><span class="dot p-WR"></span><span class="pn">Christian Watson</span><span class="tiny">He&#x27;s Back!</span><span class="paid">$6</span><span class="arw">&rarr;</span><span class="paid val">$19</span><span class="sur up">+13</span><span class="oldsur">board +3</span></li>
-<li><span class="dot p-RB"></span><span class="pn">Rico Dowdle</span><span class="tiny">He&#x27;s Back!</span><span class="paid">$2</span><span class="arw">&rarr;</span><span class="paid val">$15</span><span class="sur up">+13</span><span class="oldsur">board -1</span></li>
-<li><span class="dot p-WR"></span><span class="pn">Jameson Williams</span><span class="tiny">He&#x27;s Back!</span><span class="paid">$8</span><span class="arw">&rarr;</span><span class="paid val">$20</span><span class="sur up">+12</span><span class="oldsur">board +5</span></li>
-<li><span class="dot p-TE"></span><span class="pn">Tucker Kraft</span><span class="tiny">Pac-0 Conference</span><span class="paid">$5</span><span class="arw">&rarr;</span><span class="paid val">$17</span><span class="sur up">+12</span><span class="oldsur">board +4</span></li></ul></div>
-    <div><h3>Worst buys</h3><ul><li><span class="dot p-QB"></span><span class="pn">Josh Allen</span><span class="tiny">Crimson Bears</span><span class="paid">$56</span><span class="arw">&rarr;</span><span class="paid val">$32</span><span class="sur down">-24</span><span class="oldsur">board +26</span></li>
-<li><span class="dot p-QB"></span><span class="pn">Drake Maye</span><span class="tiny">Joshin&#8217; You Not</span><span class="paid">$41</span><span class="arw">&rarr;</span><span class="paid val">$17</span><span class="sur down">-24</span><span class="oldsur">board +33</span></li>
-<li><span class="dot p-WR"></span><span class="pn">Malik Nabers</span><span class="tiny">Uncs Gone Wild</span><span class="paid">$31</span><span class="arw">&rarr;</span><span class="paid val">$11</span><span class="sur down">-20</span><span class="oldsur">board -10</span></li>
-<li><span class="dot p-QB"></span><span class="pn">Lamar Jackson</span><span class="tiny">Crimson Bears</span><span class="paid">$48</span><span class="arw">&rarr;</span><span class="paid val">$29</span><span class="sur down">-19</span><span class="oldsur">board +11</span></li>
-<li><span class="dot p-QB"></span><span class="pn">Justin Herbert</span><span class="tiny">He&#x27;s Back!</span><span class="paid">$29</span><span class="arw">&rarr;</span><span class="paid val">$10</span><span class="sur down">-19</span><span class="oldsur">board +1</span></li>
-<li><span class="dot p-QB"></span><span class="pn">Joe Burrow</span><span class="tiny">Joshin&#8217; You Not</span><span class="paid">$43</span><span class="arw">&rarr;</span><span class="paid val">$26</span><span class="sur down">-17</span><span class="oldsur">board +23</span></li>
-<li><span class="dot p-QB"></span><span class="pn">Jalen Hurts</span><span class="tiny">He&#x27;s Back!</span><span class="paid">$40</span><span class="arw">&rarr;</span><span class="paid val">$23</span><span class="sur down">-17</span><span class="oldsur">board +3</span></li>
-<li><span class="dot p-RB"></span><span class="pn">Jadarian Price</span><span class="tiny">Tee-Tee Higgins</span><span class="paid">$17</span><span class="arw">&rarr;</span><span class="paid val">$1</span><span class="sur down">-16</span><span class="oldsur">board -15</span></li>
-<li><span class="dot p-QB"></span><span class="pn">Trevor Lawrence</span><span class="tiny">Fist My Bump</span><span class="paid">$20</span><span class="arw">&rarr;</span><span class="paid val">$7</span><span class="sur down">-13</span><span class="oldsur">board +15</span></li>
-<li><span class="dot p-WR"></span><span class="pn">DJ Moore</span><span class="tiny">Crimson Bears</span><span class="paid">$18</span><span class="arw">&rarr;</span><span class="paid val">$5</span><span class="sur down">-13</span><span class="oldsur">board -6</span></li>
-<li><span class="dot p-QB"></span><span class="pn">Caleb Williams</span><span class="tiny">Tee-Tee Higgins</span><span class="paid">$34</span><span class="arw">&rarr;</span><span class="paid val">$22</span><span class="sur down">-12</span><span class="oldsur">board +4</span></li>
-<li><span class="dot p-RB"></span><span class="pn">Bhayshul Tuten</span><span class="tiny">Mrs. Love</span><span class="paid">$20</span><span class="arw">&rarr;</span><span class="paid val">$8</span><span class="sur down">-12</span><span class="oldsur">board -10</span></li></ul></div>
+    <div><h3>Best buys</h3><ul><li><span class="dot p-RB"></span><span class="pn">Christian McCaffrey</span><span class="tiny">Tee-Tee Higgins</span><span class="ppgs">23.4</span><span class="paid">$51</span><span class="arw">&rarr;</span><span class="valc">$79</span><span class="sur up">+28</span></li>
+<li><span class="dot p-RB"></span><span class="pn">David Montgomery</span><span class="tiny">SexWithCresIsBest</span><span class="ppgs">16.3</span><span class="paid">$15</span><span class="arw">&rarr;</span><span class="valc">$33</span><span class="sur up">+18</span></li>
+<li><span class="dot p-TE"></span><span class="pn">Colston Loveland</span><span class="tiny">Tee-Tee Higgins</span><span class="ppgs">11.6</span><span class="paid">$10</span><span class="arw">&rarr;</span><span class="valc">$26</span><span class="sur up">+16</span></li>
+<li><span class="dot p-RB"></span><span class="pn">Josh Jacobs</span><span class="tiny">Mood Killer</span><span class="ppgs">16.0</span><span class="paid">$8</span><span class="arw">&rarr;</span><span class="valc">$23</span><span class="sur up">+15</span></li>
+<li><span class="dot p-RB"></span><span class="pn">Bijan Robinson</span><span class="tiny">Crimson Bears</span><span class="ppgs">23.4</span><span class="paid">$65</span><span class="arw">&rarr;</span><span class="valc">$79</span><span class="sur up">+14</span></li>
+<li><span class="dot p-RB"></span><span class="pn">Jaylen Warren</span><span class="tiny">Caleb Williams Fan Club</span><span class="ppgs">14.1</span><span class="paid">$5</span><span class="arw">&rarr;</span><span class="valc">$19</span><span class="sur up">+14</span></li>
+<li><span class="dot p-WR"></span><span class="pn">Jayden Reed</span><span class="tiny">Fist My Bump</span><span class="ppgs">11.2</span><span class="paid">$1</span><span class="arw">&rarr;</span><span class="valc">$15</span><span class="sur up">+14</span></li>
+<li><span class="dot p-RB"></span><span class="pn">De&#x27;Von Achane</span><span class="tiny">Mood Killer</span><span class="ppgs">18.4</span><span class="paid">$34</span><span class="arw">&rarr;</span><span class="valc">$47</span><span class="sur up">+13</span></li>
+<li><span class="dot p-WR"></span><span class="pn">Christian Watson</span><span class="tiny">He&#x27;s Back!</span><span class="ppgs">11.8</span><span class="paid">$6</span><span class="arw">&rarr;</span><span class="valc">$19</span><span class="sur up">+13</span></li>
+<li><span class="dot p-RB"></span><span class="pn">Rico Dowdle</span><span class="tiny">He&#x27;s Back!</span><span class="ppgs">13.5</span><span class="paid">$2</span><span class="arw">&rarr;</span><span class="valc">$15</span><span class="sur up">+13</span></li>
+<li><span class="dot p-WR"></span><span class="pn">Jameson Williams</span><span class="tiny">He&#x27;s Back!</span><span class="ppgs">12.0</span><span class="paid">$8</span><span class="arw">&rarr;</span><span class="valc">$20</span><span class="sur up">+12</span></li>
+<li><span class="dot p-TE"></span><span class="pn">Tucker Kraft</span><span class="tiny">Pac-0 Conference</span><span class="ppgs">10.2</span><span class="paid">$5</span><span class="arw">&rarr;</span><span class="valc">$17</span><span class="sur up">+12</span></li></ul></div>
+    <div><h3>Worst buys</h3><ul><li><span class="dot p-QB"></span><span class="pn">Josh Allen</span><span class="tiny">Crimson Bears</span><span class="ppgs">25.4</span><span class="paid">$56</span><span class="arw">&rarr;</span><span class="valc">$32</span><span class="sur down">-24</span></li>
+<li><span class="dot p-QB"></span><span class="pn">Drake Maye</span><span class="tiny">Joshin&#8217; You Not</span><span class="ppgs">23.0</span><span class="paid">$41</span><span class="arw">&rarr;</span><span class="valc">$17</span><span class="sur down">-24</span></li>
+<li><span class="dot p-WR"></span><span class="pn">Malik Nabers</span><span class="tiny">Uncs Gone Wild</span><span class="ppgs">10.6</span><span class="paid">$31</span><span class="arw">&rarr;</span><span class="valc">$11</span><span class="sur down">-20</span></li>
+<li><span class="dot p-QB"></span><span class="pn">Lamar Jackson</span><span class="tiny">Crimson Bears</span><span class="ppgs">25.0</span><span class="paid">$48</span><span class="arw">&rarr;</span><span class="valc">$29</span><span class="sur down">-19</span></li>
+<li><span class="dot p-QB"></span><span class="pn">Justin Herbert</span><span class="tiny">He&#x27;s Back!</span><span class="ppgs">22.0</span><span class="paid">$29</span><span class="arw">&rarr;</span><span class="valc">$10</span><span class="sur down">-19</span></li>
+<li><span class="dot p-QB"></span><span class="pn">Joe Burrow</span><span class="tiny">Joshin&#8217; You Not</span><span class="ppgs">24.5</span><span class="paid">$43</span><span class="arw">&rarr;</span><span class="valc">$26</span><span class="sur down">-17</span></li>
+<li><span class="dot p-QB"></span><span class="pn">Jalen Hurts</span><span class="tiny">He&#x27;s Back!</span><span class="ppgs">24.1</span><span class="paid">$40</span><span class="arw">&rarr;</span><span class="valc">$23</span><span class="sur down">-17</span></li>
+<li><span class="dot p-RB"></span><span class="pn">Jadarian Price</span><span class="tiny">Tee-Tee Higgins</span><span class="ppgs">11.2</span><span class="paid">$17</span><span class="arw">&rarr;</span><span class="valc">$1</span><span class="sur down">-16</span></li>
+<li><span class="dot p-QB"></span><span class="pn">Trevor Lawrence</span><span class="tiny">Fist My Bump</span><span class="ppgs">21.6</span><span class="paid">$20</span><span class="arw">&rarr;</span><span class="valc">$7</span><span class="sur down">-13</span></li>
+<li><span class="dot p-WR"></span><span class="pn">DJ Moore</span><span class="tiny">Crimson Bears</span><span class="ppgs">9.7</span><span class="paid">$18</span><span class="arw">&rarr;</span><span class="valc">$5</span><span class="sur down">-13</span></li>
+<li><span class="dot p-QB"></span><span class="pn">Caleb Williams</span><span class="tiny">Tee-Tee Higgins</span><span class="ppgs">23.8</span><span class="paid">$34</span><span class="arw">&rarr;</span><span class="valc">$22</span><span class="sur down">-12</span></li>
+<li><span class="dot p-RB"></span><span class="pn">Bhayshul Tuten</span><span class="tiny">Mrs. Love</span><span class="ppgs">12.3</span><span class="paid">$20</span><span class="arw">&rarr;</span><span class="valc">$8</span><span class="sur down">-12</span></li></ul></div>
   </div>
   <p class="lede" style="margin-top:16px;font-size:13.5px;color:var(--mute)">Ten of the twelve
-  worst buys are quarterbacks. In the first report, ten of the twelve <em>best</em> buys were.
-  Same draft, same dollars, opposite ledger.</p>
+  worst buys are quarterbacks, and every one of them is a good player. That is the point: in a
+  format with twenty-four starting quarterbacks, being good is not the same as being worth
+  paying for.</p>
 </section>
 
 <section>
-  <div class="sh"><h2>Does it survive the obvious objection?</h2><p>Top three under five distortions, including a deliberate de-regression of quarterback</p></div>
-  <p class="lede">The fair criticism of Sleeper's numbers is that weekly projections regress
-  toward the mean: nobody forecasts four touchdowns, so the projected spread at quarterback is
-  narrower than the spread that actually gets realised. So the important test is what happens
-  when that compression is undone. Stretching quarterback spread by 2.5&times; &mdash; back to
-  roughly the board's shape &mdash; does not rescue the quarterback-heavy teams. It makes the
-  leader <em>stronger</em>, because it has three startable quarterbacks of its own, and
-  Joshin&#8217; You Not still finishes twelfth.</p>
+  <div class="sh"><h2>Does the answer hold?</h2><p>Top three under five deliberate distortions of the projections</p></div>
+  <p class="lede">The fair objection to any weekly projection is that it regresses toward the
+  mean &mdash; nobody forecasts four touchdowns, so the projected spread at quarterback is
+  narrower than the spread that actually gets realised. The important test is what happens when
+  that compression is undone. Stretching quarterback spread by 2.5&times; does not rescue the
+  quarterback-heavy rosters: it makes the leader <em>stronger</em>, because it owns three
+  startable quarterbacks of its own, and Joshin&#8217; You Not still finishes twelfth. The answer is
+  not an artifact of how flat the quarterback curve is.</p>
   <div class="tw"><table class="sens">
     <thead><tr><th>Model variant</th><th>1st</th><th>2nd</th><th>3rd</th></tr></thead>
     <tbody><tr><th>QB spread x1.75</th><td><b>He&#x27;s Back!</b><i>32.6%</i></td><td><b>Uncs Gone Wild</b><i>24.9%</i></td><td><b>Fist My Bump</b><i>10.0%</i></td></tr>
-<tr><th>QB spread x2.5 (board-like)</th><td><b>He&#x27;s Back!</b><i>35.8%</i></td><td><b>Uncs Gone Wild</b><i>23.3%</i></td><td><b>Caleb Williams Fan Club</b><i>10.6%</i></td></tr>
+<tr><th>QB spread x2.5</th><td><b>He&#x27;s Back!</b><i>35.8%</i></td><td><b>Uncs Gone Wild</b><i>23.3%</i></td><td><b>Caleb Williams Fan Club</b><i>10.6%</i></td></tr>
 <tr><th>RB spread x0.75</th><td><b>He&#x27;s Back!</b><i>29.9%</i></td><td><b>Uncs Gone Wild</b><i>26.4%</i></td><td><b>Fist My Bump</b><i>12.8%</i></td></tr>
 <tr><th>WR/TE +8%</th><td><b>He&#x27;s Back!</b><i>28.8%</i></td><td><b>Uncs Gone Wild</b><i>27.3%</i></td><td><b>Fist My Bump</b><i>14.3%</i></td></tr>
 <tr><th>QB x1.75 + RB x0.85</th><td><b>He&#x27;s Back!</b><i>32.7%</i></td><td><b>Uncs Gone Wild</b><i>26.6%</i></td><td><b>Fist My Bump</b><i>8.4%</i></td></tr></tbody>
@@ -888,51 +836,58 @@ img{max-width:100%}
 </section>
 
 <section>
-  <div class="sh"><h2>Method</h2><p>What is different from the first report, and what isn't</p></div>
+  <div class="sh"><h2>Method</h2><p>What this is and what it isn't</p></div>
   <div class="method">
-    <h3>What changed</h3>
+    <h3>Projections</h3>
+    <p>Every player's week-by-week 2026 projection comes from Sleeper's own API, sourced from
+    Rotowire, and is scored with this league's exact settings &mdash; iterating the league's
+    scoring keys against each projected stat line, so the 0.2 points per rush attempt and the
+    5-point passing touchdown apply directly rather than being approximated. All 180 drafted
+    players resolved, team defenses included.</p>
+    <h3>Real schedules, real part-seasons</h3>
     <ul>
-      <li><b>Projections.</b> Every player's week-by-week 2026 projection is pulled from
-      Sleeper's own API (sourced from Rotowire) and scored with this league's exact settings
-      &mdash; iterating the league's scoring keys against the projected stat line, so the
-      0.2 per rush attempt and the 5-point passing touchdown are applied directly rather than
-      approximated by a curve. All 180 drafted players resolved.</li>
-      <li><b>Real bye weeks.</b> A missing week in the projection is a real bye, recovered
-      unanimously for all 32 NFL teams. The first report assigned byes at random.</li>
-      <li><b>Real part-seasons.</b> Kirk Cousins is projected to start weeks 1&ndash;2 before
-      Fernando Mendoza takes over; Josh Jacobs and Zach Charbonnet miss week 1; Michael Penix
-      has no projection at all. Those are modelled as written rather than smoothed away.</li>
+      <li>A missing week in a projection is a real bye, recovered unanimously across all 32 NFL
+      teams &mdash; so rosters stacked on one team take correlated hits in the weeks that
+      actually matter.</li>
+      <li>Part-seasons are modelled as written: Kirk Cousins projects to start weeks 1&ndash;2
+      before Fernando Mendoza takes over, Josh Jacobs and Zach Charbonnet miss week 1, and
+      Michael Penix has no projection at all.</li>
     </ul>
-    <h3>What deliberately did not change</h3>
-    <p>Same simulator, same 20,000 seasons, same weekly variance by position, same injury
-    hazards, same lineup optimiser, same schedule and median-match scoring, same replacement
-    logic and the same value-above-replacement baselines (QB24, RB30, WR42, TE14). Only the
-    projection source moved, so the difference between the two reports is attributable to it
-    and nothing else.</p>
-    <h3>Availability</h3>
-    <p>Sleeper's projections carry <span style="font-family:var(--mono);font-size:12px">gp:
-    1.0</span> for every player, so they do not discount for injury risk &mdash; the simulator's
-    own hazard model is not double-counting. The 38 "Questionable" tags attached to the draft
-    picks are from draft day in August and are stale; the projections are current.</p>
+    <h3>Simulation</h3>
+    <ul>
+      <li>20,000 seasons; 14 regular-season weeks, then a 6-team bracket in weeks 15&ndash;17.</li>
+      <li>Weekly scores drawn per player around the projection with position-specific variance
+      &mdash; quarterback tightest, receiver and tight end widest.</li>
+      <li>Injuries as a weekly hazard by position, raised for players with nine or more years of
+      experience and for high-volume backs, duration drawn from an exponential. Sleeper's
+      projections carry no availability discount of their own, so this does not double-count.</li>
+      <li>Lineups filled optimally from whoever is available; unfilled slots score at streamer
+      replacement level.</li>
+      <li>Both the head-to-head result and the weekly median match count, matching this league's
+      <span style="font-family:var(--mono);font-size:12px">league_average_match</span> setting.</li>
+    </ul>
+    <h3>Auction value</h3>
+    <p>Value above replacement against superflex baselines &mdash; QB24, RB30, WR42, TE14 &mdash;
+    allocated across the $2,400 pool with $1 reserved per roster spot.</p>
     <div class="caveat">
-      <p><b>Which report is right?</b> Neither, on its own. They are two defensible answers to
-      one honest question: how much does an elite quarterback really beat a freely available
-      one in a superflex? Everything else the two sources agree on.</p>
-      <p>Sleeper's answer is the safer one for <em>expected</em> value, because projected spread
-      is what you can actually buy; realised spread includes luck that is not for sale. But it
-      is compressed by regression, and it understates upside &mdash; the simulator adds symmetric
-      weekly variance, which does not recreate the fatter right tail an elite quarterback has.
-      The truth is very likely between the two, which is why the roster that ranks near the top
-      of both is the most interesting one on the page.</p>
-      <p>And the standing caveat holds: this projects the preseason, not the season. Nothing here
-      has watched a snap.</p>
+      <p><b>The honest caveat.</b> This projects the preseason, not the season. It inherits every
+      error in the underlying projections and has watched no football: no camp news, no
+      depth-chart surprises, no in-season trades or waiver claims, all of which move a
+      fourteen-week outcome more than anything on this page.</p>
+      <p>Weekly projections also understate upside by construction. The simulator adds symmetric
+      variance around each forecast, which does not recreate the fatter right tail an elite
+      player carries. If you think that tail is worth paying for, the quarterback market here
+      looks less irrational than the numbers say &mdash; though the robustness check above
+      suggests it would not change who wins.</p>
+      <p>And the spread is narrow: 23.7 points a game separate first from last across a full
+      lineup, and the win ranges overlap heavily. Treat the ordering as a prior, not a result.</p>
     </div>
   </div>
 </section>
 
-<footer>D12 &middot; draft 1385112266176733184 &middot; 180 picks, $2,400 &middot; Sleeper weekly
-projections for 2026, scored with this league's settings &middot; 20,000 simulated seasons
-&middot; generated 6 September 2026</footer>
+<footer>D12 &middot; draft 1385112266176733184 &middot; 180 picks, $2,400 spent &middot; Sleeper
+weekly projections for 2026 scored with this league's settings &middot; 20,000 simulated seasons
+&middot; generated 7 September 2026</footer>
 </div>
 
 </body>
