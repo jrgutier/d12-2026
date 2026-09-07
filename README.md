@@ -5,6 +5,21 @@ auction where every manager spent exactly $200.
 
 **Read it: https://jrgutier.github.io/d12-2026/**
 
+## Two projections
+
+The same draft is projected twice, from two different sources, using an identical simulator:
+
+| | Source | Read |
+|---|---|---|
+| **The $2,400 Board** | the league's own 2026 ranking board | https://jrgutier.github.io/d12-2026/ |
+| **Two Boards, One Draft** | Sleeper's weekly projections (Rotowire), scored with this league's settings | https://jrgutier.github.io/d12-2026/sleeper/ |
+
+They disagree almost completely. Eleven of twelve teams move, and the team most likely to win
+the title under the board finishes last under Sleeper's numbers. The two sources agree closely
+on running backs, receivers and tight ends; they disagree only about quarterbacks, where the
+board sees a 17.5 point-per-game gap from the best to the 24th-best and Sleeper sees 4.8. In a
+league that starts 24 quarterbacks a week, that single number decides the season.
+
 ## What it is
 
 Every one of the 180 auction picks is matched to a positional rank on the league's
